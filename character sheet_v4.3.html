@@ -19,7 +19,7 @@
   /* Header */
   #header{background:linear-gradient(180deg,#0f0e17 0%,#1a0a0a 100%);border-bottom:2px solid #b8520a;padding:20px 24px 14px}
   .header-title{font-size:28px;font-weight:900;color:#c9a84c;letter-spacing:3px;line-height:1}
-  .header-sub{font-size:13px;color:#b8520a;letter-spacing:4px;margin-top:2px}
+  .header-sub{font-size:14px;color:#b8520a;letter-spacing:4px;margin-top:2px}
   .header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
   .identity-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr 1fr;gap:10px;margin-bottom:10px}
   .identity-grid2{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
@@ -70,7 +70,7 @@
   .death-circle.fail{background:#6b1a1a;border-color:#9b2a2a}
 
   /* Spell Slots */
-  .slot-bubble{width:24px;height:24px;border-radius:50%;border:2px solid #b8520a;background:transparent;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;font-size:10px;color:transparent}
+  .slot-bubble{width:24px;height:24px;border-radius:50%;border:2px solid #b8520a;background:transparent;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:transparent}
   .slot-bubble.used{background:#3a0000;border-color:#3a0000;color:#b8520a}
   .slot-bubble:hover{border-color:#c9a84c}
 
@@ -78,7 +78,7 @@
   .gold-btn{background:linear-gradient(135deg,#8b6914,#c9a84c);border:none;color:#0f0e17;padding:7px 16px;border-radius:4px;cursor:pointer;font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;font-weight:700}
   .gold-btn:hover{opacity:.9}
   .small-btn{padding:3px 10px;font-size:11px}
-  .danger-btn{background:#3a0000;border:1px solid #b8520a;color:#ff6b6b;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:12px}
+  .danger-btn{background:#3a0000;border:1px solid #b8520a;color:#ff6b6b;padding:3px 10px;border-radius:4px;cursor:pointer;font-size:13px}
   .danger-btn:hover{background:#500000}
 
   /* Weapons */
@@ -325,6 +325,8 @@
 
 <!-- ====== SPELLS TAB ====== -->
 <div id="tab-spells" class="tab-pane">
+  <!-- Feat Spells — always visible when feats grant spells -->
+  <div id="feat-spells-section" style="display:none;margin-bottom:16px"></div>
   <div id="no-spells-msg" style="text-align:center;padding:60px;color:#8a7560">
     <div class="cinzel" style="font-size:20px;margin-bottom:12px">⚔ No Spellcasting</div>
     <div id="no-spells-sub">Select a spellcasting class first.</div>
@@ -2565,6 +2567,8 @@ const state = {
   customResistances: [], // user-added free text
   breathWeapon: null,    // {shape,dmgType,save,dmg} for Dragonborn
   magicItems: [],        // [{...item data, attuned, notes}]
+  featChoices: {},       // {featName: {ability:'CHA', chosen:['SpellName']}}
+  featSpellUses: {},     // {'FeatName|SpellName': {max:1, used:0, rest:'long'}}
 };
 
 // init skills
@@ -2807,7 +2811,7 @@ function updateHpBar() {
   const pct = Math.min(100, Math.max(0, (cur/max)*100));
   const bar = document.getElementById('hp-bar');
   bar.style.width = pct+'%';
-  bar.style.background = pct<=25?'#b8520a':pct<=50?'#b8520a':'#1a6b1a';
+  bar.style.background = pct<=25?'#cc3300':pct<=50?'#b8520a':'#1a6b1a';
   const hpText = document.getElementById('hp-text');
   hpText.textContent = max>0?`${cur}/${max} HP (${Math.round(pct)}%)`:'';
   const hpCur = document.getElementById('hp-current');
@@ -3069,7 +3073,7 @@ function updateBgFeature() {
   if ((bg.tools||[]).length) html += `<div class="field-label" style="margin-top:8px;margin-bottom:4px">Tool Proficiencies</div>${bg.tools.map(t=>`<div style="font-size:13px">• ${t}</div>`).join('')}`;
   if ((bg.langs||[]).length) html += `<div class="field-label" style="margin-top:8px;margin-bottom:4px">Languages</div>${bg.langs.map(l=>`<div style="font-size:13px;color:#8a7560">• ${l}</div>`).join('')}`;
   if ((bg.equipment||[]).length) html += `<div class="field-label" style="margin-top:8px;margin-bottom:4px">Starting Equipment</div>${bg.equipment.map(e=>`<div style="font-size:12px;color:#8a7560">• ${e}</div>`).join('')}`;
-  if (bg.featureDesc) html += `<div class="field-label" style="margin-top:10px;margin-bottom:4px">Feature: ${bg.feature}</div><div style="font-size:13px;color:#b8520a;line-height:1.5">${bg.featureDesc}</div>`;
+  if (bg.featureDesc) html += `<div class="field-label" style="margin-top:10px;margin-bottom:4px">Feature: ${bg.feature}</div><div style="font-size:12px;color:#b8a898;line-height:1.5">${bg.featureDesc}</div>`;
   document.getElementById('bg-feat-profs').innerHTML = html;
 }
 
@@ -3157,7 +3161,7 @@ function classFeatCardHtml(f, cls, expanded) {
       </div>
       <span style="font-size:10px;color:#8a7560;flex-shrink:0;margin-left:8px">Level ${f.l}</span>
     </div>
-    ${desc ? `<div id="${id}" style="display:none;padding:0 4px 10px 4px;font-size:13px;color:#b8520a;line-height:1.6">${desc}</div>` : ''}
+    ${desc ? `<div id="${id}" style="display:none;padding:0 4px 10px 4px;font-size:12px;color:#b8a898;line-height:1.6">${desc}</div>` : ''}
   </div>`;
 }
 
@@ -3213,7 +3217,7 @@ function updateClassFeatures() {
             <span class="cinzel" style="font-size:13px;color:#c9a84c">${f.n}</span>
             <span style="font-size:10px;color:#8a7560;flex-shrink:0;margin-left:8px">Level ${f.l}</span>
           </div>
-          <div style="font-size:13px;color:#b8520a;line-height:1.5">${f.desc}</div>
+          <div style="font-size:12px;color:#b8a898;line-height:1.5">${f.desc}</div>
         </div>`).join('')
       : '<div class="muted">No subclass features at current level. Increase your level to unlock them.</div>';
 
@@ -3240,14 +3244,20 @@ function addFeat() {
   const sel = document.getElementById('feat-add-sel');
   const name = sel.value;
   if (!name || state.selectedFeats.includes(name)) { sel.value=''; return; }
-  state.selectedFeats.push(name);
   sel.value='';
-  renderFeats();
+  addFeatWithSpellCheck(name);
 }
 
 function removeFeat(name) {
   state.selectedFeats = state.selectedFeats.filter(f=>f!==name);
+  // Clean up any feat spell choices and use state for this feat
+  delete state.featChoices[name];
+  for (const key of Object.keys(state.featSpellUses)) {
+    if (key.startsWith(name + '|')) delete state.featSpellUses[key];
+  }
   renderFeats();
+  renderFeatSpells();
+  autoSave();
 }
 
 function renderFeats() {
@@ -3269,6 +3279,7 @@ function renderFeats() {
   // Re-calc AC and passive perception — feats like Observant/Dual Wielder affect them
   updatePassivePerception();
   updateACDisplay();
+  renderFeatSpells();
 }
 
 // ============================================================
@@ -3435,7 +3446,7 @@ function showSpellModal(spellName) {
       <div class="cinzel" style="font-size:18px;color:#c9a84c;margin-bottom:4px">${spellName}</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
         <span style="background:${sc}22;color:${sc};border:1px solid ${sc}44;font-size:11px;padding:2px 8px;border-radius:12px">${data.school}</span>
-        <span style="background:#2a2030;color:#b8520a;font-size:12px;padding:2px 8px;border-radius:12px">${lvlLabel}</span>
+        <span style="background:#2a2030;color:#b8a898;font-size:11px;padding:2px 8px;border-radius:12px">${lvlLabel}</span>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
         <div style="background:#0e0c14;border-radius:6px;padding:8px">
@@ -3455,7 +3466,7 @@ function showSpellModal(spellName) {
           <div style="font-size:13px;color:#e8dcc8">${data.dur}</div>
         </div>
       </div>
-      <div style="font-size:13px;color:#b8520a;line-height:1.7;border-top:1px solid #2a2030;padding-top:12px">${data.desc}</div>
+      <div style="font-size:13px;color:#b8a898;line-height:1.7;border-top:1px solid #2a2030;padding-top:12px">${data.desc}</div>
     </div>
   `;
   modal.style.display='flex';
@@ -3831,7 +3842,7 @@ function previewPack() {
   if (!pack) { preview.style.display='none'; return; }
   preview.style.display='block';
   preview.innerHTML = `<span style="color:#c9a84c;font-weight:600">${pack.name}</span> <span style="color:#8a7560">(${pack.cost})</span><br>` +
-    pack.contents.map(c => `<span style="color:#b8520a">• ${c}</span>`).join('&nbsp;&nbsp;');
+    pack.contents.map(c => `<span style="color:#b8a898">• ${c}</span>`).join('&nbsp;&nbsp;');
 }
 
 function addEquipPack() {
@@ -3974,7 +3985,7 @@ function showTab(id, btn) {
   btn.classList.add('active');
 
   // Refresh spell section when navigating to spells
-  if (id==='spells') { updateSpellSection(); }
+  if (id==='spells') { updateSpellSection(); renderFeatSpells(); }
   if (id==='magic') { renderMagicItems(); }
   if (id==='features') { updateClassFeatures(); updateRacialTraits(); updateBgFeature(); }
 }
@@ -4055,6 +4066,8 @@ function gatherSaveData() {
       pp: document.getElementById('cur-pp').value,
     },
     magicItems: state.magicItems || [],
+    featChoices: state.featChoices || {},
+    featSpellUses: state.featSpellUses || {},
     lifestyle: document.getElementById('lifestyle-sel').value,
     inventory: (()=>{
       const rows=[];
@@ -4136,6 +4149,9 @@ function applySaveData(d) {
   state.selectedFeats=d.feats||[]; renderFeats();
   state.customResistances=d.customResistances||[]; updateResistances();
   state.magicItems=d.magicItems||[]; renderMagicItems();
+  state.featChoices=d.featChoices||{};
+  state.featSpellUses=d.featSpellUses||{};
+  renderFeatSpells();
   if(d.currency){
     ['cp','sp','ep','gp','pp'].forEach(c=>{document.getElementById('cur-'+c).value=d.currency[c]||0;});
     updateGpTotal();
@@ -4374,9 +4390,9 @@ function renderMagicItems() {
           <!-- Type -->
           <div style="font-size:11px;color:#8a7560;margin-bottom:6px">${m.type}${m.attunement?'<span style="color:#c9a84c"> · Requires Attunement</span>':''}</div>
           <!-- Charges / bonus snippet -->
-          ${m.charges ? `<div style="font-size:12px;color:#b8520a;margin-bottom:4px">⚡ ${m.charges} charges${m.recharge?' ('+m.recharge+')':''}</div>` : ''}
-          ${m.bonus ? `<div style="font-size:12px;color:#b8520a;margin-bottom:4px">🗡 ${m.bonus}</div>` : ''}
-          ${m.resist ? `<div style="font-size:12px;color:#b8520a;margin-bottom:4px">🛡 Resistance: ${m.resist}</div>` : ''}
+          ${m.charges ? `<div style="font-size:11px;color:#b8a898;margin-bottom:4px">⚡ ${m.charges} charges${m.recharge?' ('+m.recharge+')':''}</div>` : ''}
+          ${m.bonus ? `<div style="font-size:11px;color:#b8a898;margin-bottom:4px">🗡 ${m.bonus}</div>` : ''}
+          ${m.resist ? `<div style="font-size:11px;color:#b8a898;margin-bottom:4px">🛡 Resistance: ${m.resist}</div>` : ''}
           ${m.curse ? `<div style="font-size:11px;color:#ff6b6b;margin-bottom:4px">☠ Cursed Item</div>` : ''}
           <!-- Desc preview -->
           <div style="font-size:11px;color:#6a5a4a;line-height:1.4;margin-top:4px">${m.desc.slice(0,90)}${m.desc.length>90?'…':''}</div>
@@ -4455,7 +4471,7 @@ function showMagicModal(name) {
     variantsHtml = `<div style="margin-top:12px;padding-top:12px;border-top:1px solid #2a2030">
       <div style="font-size:11px;color:#8a7560;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Variants by Level</div>
       <div style="display:flex;flex-wrap:wrap;gap:6px">
-        ${m.variants.map(v=>`<span style="background:#1a1520;border:1px solid #3a2a30;border-radius:6px;padding:2px 8px;font-size:12px;color:#b8520a">
+        ${m.variants.map(v=>`<span style="background:#1a1520;border:1px solid #3a2a30;border-radius:6px;padding:2px 8px;font-size:11px;color:#b8a898">
           Level ${v.level} · ${(RARITY_COLORS[v.rarity]||RARITY_COLORS.common).label}</span>`).join('')}
       </div></div>`;
   }
@@ -4483,7 +4499,7 @@ function showMagicModal(name) {
       .mi-stat span:first-child{font-size:9px;color:#8a7560;text-transform:uppercase;letter-spacing:.08em}
       .mi-stat span:last-child{font-size:13px;color:#e8dcc8}</style>${extras}</div>` : ''}
 
-    <div style="font-size:13px;color:#b8520a;line-height:1.75;border-top:1px solid #2a2030;padding-top:14px">${m.desc}</div>
+    <div style="font-size:13px;color:#b8a898;line-height:1.75;border-top:1px solid #2a2030;padding-top:14px">${m.desc}</div>
     ${variantsHtml}
 
     <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
@@ -4512,6 +4528,523 @@ function autoSave() {
   try { localStorage.setItem('dnd_character', JSON.stringify(gatherSaveData())); } catch(e) {}
 }
 
+
+// ============================================================
+// FEAT-GRANTED SPELLS SYSTEM
+// ============================================================
+
+// Master definition of every feat that grants spells
+const FEAT_SPELL_GRANTS = {
+  'Shadow Touched': {
+    abilityChoices: ['INT','WIS','CHA'],
+    fixed: [
+      {name:'Invisibility', rest:'long', usesPerRest:1, note:'2nd-level spell'}
+    ],
+    choices: [
+      {
+        id: 'shadow_spell',
+        prompt: 'Choose one 1st-level Illusion or Necromancy spell',
+        count: 1,
+        schools: ['Illusion','Necromancy'],
+        level: 1
+      }
+    ],
+    restNote: 'Cast each spell once per long rest for free, or by expending a spell slot'
+  },
+  'Fey Touched': {
+    abilityChoices: ['INT','WIS','CHA'],
+    fixed: [
+      {name:'Misty Step', rest:'long', usesPerRest:1, note:'2nd-level spell'}
+    ],
+    choices: [
+      {
+        id: 'fey_spell',
+        prompt: 'Choose one 1st-level Divination or Enchantment spell',
+        count: 1,
+        schools: ['Divination','Enchantment'],
+        level: 1
+      }
+    ],
+    restNote: 'Cast each spell once per long rest for free, or by expending a spell slot'
+  },
+  'Magic Initiate': {
+    abilityChoices: ['INT','WIS','CHA'],
+    classChoice: true,
+    choices: [
+      {
+        id: 'mi_cantrip1',
+        prompt: 'Choose your first cantrip (from chosen class)',
+        count: 1, level: 0, fromClass: true, cantripLabel: 'Cantrip 1'
+      },
+      {
+        id: 'mi_cantrip2',
+        prompt: 'Choose your second cantrip (from chosen class)',
+        count: 1, level: 0, fromClass: true, cantripLabel: 'Cantrip 2'
+      },
+      {
+        id: 'mi_spell',
+        prompt: 'Choose one 1st-level spell (from chosen class)',
+        count: 1, level: 1, fromClass: true
+      }
+    ],
+    // Cantrips are at-will; only 1st-level spell tracks uses
+    usesOverride: {mi_cantrip1: -1, mi_cantrip2: -1, mi_spell: 1},
+    restNote: 'Cantrips can be cast at will. The 1st-level spell can be cast once per long rest for free.'
+  },
+  'Artificer Initiate': {
+    abilityChoices: ['INT'],
+    choices: [
+      {
+        id: 'ai_cantrip',
+        prompt: 'Choose one Artificer cantrip',
+        count: 1, level: 0, hardList: ['Fire Bolt','Guidance','Light','Mage Hand','Mending','Message','Prestidigitation','Ray of Frost','Shocking Grasp','Thunderclap']
+      },
+      {
+        id: 'ai_spell',
+        prompt: 'Choose one 1st-level Artificer spell',
+        count: 1, level: 1, hardList: ['Alarm','Cure Wounds','Detect Magic','Disguise Self','Expeditious Retreat','Faerie Fire','False Life','Feather Fall','Identify','Jump','Longstrider','Purify Food and Drink','Sanctuary','Shield of Faith','Tasha\'s Caustic Brew']
+      }
+    ],
+    usesOverride: {ai_cantrip: -1, ai_spell: 1},
+    restNote: 'Cantrip is at-will. The 1st-level spell can be cast once per long rest for free, or with spell slots.'
+  },
+  'Drow High Magic': {
+    abilityChoices: ['CHA'],
+    fixed: [
+      {name:'Detect Magic', rest:'long', usesPerRest:-1, note:'at will'},
+      {name:'Levitate',     rest:'long', usesPerRest:1,  note:'1/long rest'},
+      {name:'Dispel Magic', rest:'long', usesPerRest:1,  note:'1/long rest'}
+    ],
+    choices: [],
+    restNote: 'Uses Charisma as spellcasting ability'
+  },
+  'Wood Elf Magic': {
+    abilityChoices: ['WIS'],
+    fixed: [
+      {name:'Longstrider',       rest:'long', usesPerRest:1, note:'1/long rest'},
+      {name:'Pass Without Trace',rest:'long', usesPerRest:1, note:'1/long rest'}
+    ],
+    choices: [
+      {
+        id: 'wem_cantrip',
+        prompt: 'Choose one Druid cantrip',
+        count: 1, level: 0, fromListKey: 'Druid'
+      }
+    ],
+    usesOverride: {wem_cantrip: -1},
+    restNote: 'Cantrip is at-will. Longstrider and Pass Without Trace each 1/long rest for free, or using spell slots.'
+  },
+  'Fey Teleportation': {
+    abilityChoices: ['INT','CHA'],
+    fixed: [
+      {name:'Misty Step', rest:'short', usesPerRest:1, note:'1/short rest'}
+    ],
+    choices: [],
+    restNote: 'Misty Step can be cast once per short rest using Intelligence or Charisma'
+  }
+};
+
+// ── Build the choices-needed list from state ──
+function getFeatSpellsFlat() {
+  // Returns array of {feat, spell, rest, usesPerRest, isCantrip, note} for all granted spells
+  const result = [];
+  for (const featName of state.selectedFeats) {
+    const grant = FEAT_SPELL_GRANTS[featName];
+    if (!grant) continue;
+    const choices = state.featChoices[featName] || {};
+    // Fixed spells
+    for (const fix of (grant.fixed||[])) {
+      result.push({feat:featName, spell:fix.name, rest:fix.rest, uses:fix.usesPerRest, note:fix.note, isFixed:true, isCantrip:false});
+    }
+    // Chosen spells
+    for (const ch of (grant.choices||[])) {
+      const chosen = choices[ch.id] || [];
+      const overrideUses = grant.usesOverride ? grant.usesOverride[ch.id] : undefined;
+      const uses = overrideUses !== undefined ? overrideUses : 1;
+      const rest = grant.restNote && grant.restNote.includes('short') ? 'short' : 'long';
+      for (const spellName of (Array.isArray(chosen) ? chosen : [chosen])) {
+        if (spellName) {
+          const isCantrip = SPELL_DATA[spellName] && SPELL_DATA[spellName].level === 0;
+          result.push({feat:featName, spell:spellName, rest:'long', uses: isCantrip ? -1 : uses, note:'', isFixed:false, isCantrip});
+        }
+      }
+    }
+  }
+  return result;
+}
+
+function featSpellKey(feat, spell) { return feat + '|' + spell; }
+
+// ── Rendering ──
+function renderFeatSpells() {
+  const section = document.getElementById('feat-spells-section');
+  if (!section) return;
+
+  // Which feats with spell grants are active?
+  const activeFeatGrants = state.selectedFeats.filter(f => FEAT_SPELL_GRANTS[f]);
+  if (!activeFeatGrants.length) { section.style.display='none'; return; }
+
+  // Check if any feat still needs configuration
+  const needsSetup = activeFeatGrants.filter(f => !isFeatSpellConfigured(f));
+
+  section.style.display = 'block';
+
+  let html = '<div class="card" style="margin-bottom:16px">';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">';
+  html += '<div class="section-title" style="margin-bottom:0">🌟 Feat-Granted Spells</div>';
+  html += '<div style="display:flex;gap:8px">';
+  html += '<button class="gold-btn small-btn" onclick="longRestFeatSpells()">☀ Long Rest</button>';
+  html += '<button class="gold-btn small-btn" style="background:#1a2030" onclick="shortRestFeatSpells()">🌙 Short Rest</button>';
+  html += '</div></div>';
+
+  // Setup prompts for unconfigured feats
+  for (const fn of needsSetup) {
+    html += `<div style="background:#1a1a10;border:1px dashed #c9a84c;border-radius:6px;padding:12px;margin-bottom:10px">
+      <div class="cinzel" style="color:#c9a84c;font-size:13px;margin-bottom:6px">⚙ ${fn} — Spell Selection Required</div>
+      <div style="font-size:12px;color:#8a7560;margin-bottom:8px">This feat grants you spells. Complete the setup below.</div>
+      <button class="gold-btn small-btn" onclick="openFeatSpellSetup('${fn.replace(/'/g,"\\'")}')">Configure Spells →</button>
+    </div>`;
+  }
+
+  // Render configured feats grouped by feat
+  const configured = activeFeatGrants.filter(f => isFeatSpellConfigured(f));
+  for (const fn of configured) {
+    const grant = FEAT_SPELL_GRANTS[fn];
+    const choices = state.featChoices[fn] || {};
+    const allSpells = getFeatSpellsFlat().filter(e => e.feat === fn);
+    if (!allSpells.length) continue;
+
+    const abilityLabel = choices.ability || (grant.abilityChoices && grant.abilityChoices[0]) || 'INT';
+    const mod = getMod(state.abilities[abilityLabel.toLowerCase()]);
+    const modStr2 = (mod >= 0 ? '+' : '') + mod;
+
+    html += `<div style="margin-bottom:16px">
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:8px">
+        <span class="cinzel" style="font-size:13px;color:#c9a84c">${fn}</span>
+        <span style="font-size:11px;color:#8a7560">Ability: ${abilityLabel} (${modStr2})</span>
+        ${grant.restNote ? `<span style="font-size:10px;color:#5a4a30;font-style:italic">${grant.restNote}</span>` : ''}
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px">`;
+
+    for (const entry of allSpells) {
+      const key = featSpellKey(fn, entry.spell);
+      const usageState = state.featSpellUses[key] || {max: Math.max(entry.uses,0), used:0};
+      const isAtWill = entry.uses === -1;
+      const isCantrip = entry.isCantrip;
+      const spData = SPELL_DATA[entry.spell];
+
+      let useBubbles = '';
+      if (!isAtWill && !isCantrip && usageState.max > 0) {
+        for (let i = 0; i < usageState.max; i++) {
+          const used = i < usageState.used;
+          const k2 = key.replace(/'/g,"\\'");
+          useBubbles += `<span onclick="toggleFeatSpellUse('${k2}',${i})"
+            style="display:inline-block;width:14px;height:14px;border-radius:50%;
+                   border:2px solid #c9a84c;background:${used?'#c9a84c':'transparent'};
+                   cursor:pointer;margin-left:2px" title="${used?'Used — click to restore':'Available'}"></span>`;
+        }
+      }
+
+      const restTag = isAtWill ? '<span style="color:#6ecc6e;font-size:10px">At Will</span>'
+                    : isCantrip ? '<span style="color:#6ecc6e;font-size:10px">At Will</span>'
+                    : entry.rest==='short'
+                      ? '<span style="color:#60c8ff;font-size:10px">1/Short Rest</span>'
+                      : '<span style="color:#c9a84c;font-size:10px">1/Long Rest</span>';
+
+      const safeName = entry.spell.replace(/'/g,"\\'");
+      html += `<div style="background:#0e0c14;border:1px solid #2a2030;border-radius:6px;padding:10px;cursor:pointer"
+                    onclick="showSpellModal('${safeName}')"
+                    onmouseover="this.style.borderColor='#4a3728'" onmouseout="this.style.borderColor='#2a2030'">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div class="cinzel" style="font-size:12px;color:#e8dcc8;margin-bottom:2px">${entry.spell}</div>
+            ${spData ? `<div style="font-size:10px;color:#8a7560">${spData.school} · ${isCantrip?'Cantrip':spData.level+'th level'} · ${spData.cast}</div>` : ''}
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+            ${restTag}
+            <div style="display:flex;align-items:center">${useBubbles}</div>
+          </div>
+        </div>
+        ${entry.note ? `<div style="font-size:10px;color:#5a4a30;margin-top:4px">${entry.note}</div>` : ''}
+        ${spData ? `<div style="font-size:10px;color:#5a4a40;margin-top:4px;line-height:1.4">${spData.desc.slice(0,80)}…</div>` : ''}
+      </div>`;
+    }
+
+    html += '</div></div>';
+  }
+
+  html += '</div>';
+  section.innerHTML = html;
+
+  // Sync the feat spells uses state for new entries
+  syncFeatSpellUsesState();
+}
+
+function syncFeatSpellUsesState() {
+  // Ensure every active feat spell has an entry in state.featSpellUses
+  for (const entry of getFeatSpellsFlat()) {
+    if (entry.uses === -1) continue; // at-will, no tracking
+    const key = featSpellKey(entry.feat, entry.spell);
+    if (!state.featSpellUses[key]) {
+      state.featSpellUses[key] = {max: Math.max(entry.uses, 0), used: 0, rest: entry.rest};
+    }
+  }
+}
+
+function toggleFeatSpellUse(key, idx) {
+  if (!state.featSpellUses[key]) return;
+  const u = state.featSpellUses[key];
+  // Toggle: if slot idx < used, reducing; otherwise increasing
+  if (idx < u.used) u.used = idx;       // click on a used bubble: restore from that point
+  else              u.used = idx + 1;   // click on empty: use through this one
+  renderFeatSpells();
+  autoSave();
+}
+
+function longRestFeatSpells() {
+  for (const key of Object.keys(state.featSpellUses)) {
+    state.featSpellUses[key].used = 0;
+  }
+  renderFeatSpells();
+  showToast('☀ Long Rest — all feat spell uses restored');
+  autoSave();
+}
+
+function shortRestFeatSpells() {
+  for (const key of Object.keys(state.featSpellUses)) {
+    if (state.featSpellUses[key].rest === 'short') {
+      state.featSpellUses[key].used = 0;
+    }
+  }
+  renderFeatSpells();
+  showToast('🌙 Short Rest — short-rest feat spells restored');
+  autoSave();
+}
+
+// ── Checks whether a feat's spell choices are all filled in ──
+function isFeatSpellConfigured(featName) {
+  const grant = FEAT_SPELL_GRANTS[featName];
+  if (!grant) return true; // not a spell-granting feat
+  if (!grant.choices || !grant.choices.length) return true; // no choices needed
+  const choices = state.featChoices[featName];
+  if (!choices) return false;
+  // Verify each choice slot has been filled
+  for (const ch of grant.choices) {
+    const selected = choices[ch.id];
+    if (!selected || (Array.isArray(selected) ? selected.length === 0 : !selected)) return false;
+  }
+  return true;
+}
+
+// ── Modal for feat spell setup ──
+function openFeatSpellSetup(featName) {
+  const grant = FEAT_SPELL_GRANTS[featName];
+  if (!grant) return;
+  const modal = document.getElementById('feat-spell-setup-modal');
+  const body  = document.getElementById('feat-spell-setup-body');
+  if (!modal || !body) return;
+
+  // Retrieve or initialise the working choices object
+  // NOTE: We store PENDING choices here; only committed on confirm
+  const existing = state.featChoices[featName] || {};
+  let html = '';
+
+  html += `<div class="cinzel" style="font-size:18px;color:#c9a84c;margin-bottom:4px">${featName}</div>`;
+  html += `<div style="font-size:12px;color:#8a7560;margin-bottom:16px">Configure the spells granted by this feat. Once confirmed, spell choices are locked.</div>`;
+
+  // Ability picker (if more than one option)
+  if (grant.abilityChoices && grant.abilityChoices.length > 1) {
+    html += `<div style="margin-bottom:14px">
+      <div class="field-label" style="margin-bottom:6px">Spellcasting Ability for this feat:</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">`;
+    for (const ab of grant.abilityChoices) {
+      const isSelected = (existing.ability === ab) || (!existing.ability && ab === grant.abilityChoices[0]);
+      html += `<label style="display:flex;align-items:center;gap:5px;cursor:pointer;
+                background:${isSelected?'#2a1a08':'#1a1520'};border:1px solid ${isSelected?'#c9a84c':'#3a2a30'};
+                border-radius:6px;padding:5px 12px">
+        <input type="radio" name="feat_ability" value="${ab}" ${isSelected?'checked':''} 
+               style="accent-color:#c9a84c;cursor:pointer">
+        <span class="cinzel" style="font-size:13px;color:${isSelected?'#c9a84c':'#8a7560'}">${ab}</span>
+      </label>`;
+    }
+    html += '</div></div>';
+  }
+
+  // Class choice for Magic Initiate
+  if (grant.classChoice) {
+    const classes = ['Bard','Cleric','Druid','Paladin','Ranger','Sorcerer','Warlock','Wizard'];
+    const selClass = existing.chosenClass || '';
+    html += `<div style="margin-bottom:14px">
+      <div class="field-label" style="margin-bottom:6px">Choose a class spell list:</div>
+      <select id="mi_class_sel" class="field-input" onchange="refreshMIClassSpells()" style="max-width:200px">
+        <option value="">— Select class —</option>
+        ${classes.map(c=>`<option value="${c}" ${selClass===c?'selected':''}>${c}</option>`).join('')}
+      </select>
+    </div>`;
+  }
+
+  // Fixed spells display
+  if (grant.fixed && grant.fixed.length) {
+    html += `<div style="margin-bottom:14px">
+      <div class="field-label" style="margin-bottom:6px">Fixed spells granted (no choice needed):</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">`;
+    for (const fix of grant.fixed) {
+      html += `<span style="background:#1a2a1a;border:1px solid #2e6e2e;border-radius:6px;
+                            padding:4px 10px;font-size:12px;color:#6ecc6e">✓ ${fix.name}</span>`;
+    }
+    html += '</div></div>';
+  }
+
+  // Dynamic choice selectors
+  html += `<div id="feat_choice_fields">`;
+  html += buildFeatChoiceFields(featName, grant, existing);
+  html += `</div>`;
+
+  html += `<div style="display:flex;gap:10px;margin-top:20px">
+    <button class="gold-btn" onclick="confirmFeatSpellSetup('${featName.replace(/'/g,"\\'")}')">✓ Confirm Choices</button>
+    <button onclick="closeFeatSpellSetup()" style="background:#1a1520;border:1px solid #4a3728;border-radius:6px;
+            color:#8a7560;padding:8px 16px;cursor:pointer;font-size:13px;font-family:'Cinzel',serif">Cancel</button>
+  </div>`;
+
+  body.innerHTML = html;
+  modal.style.display = 'flex';
+}
+
+function buildFeatChoiceFields(featName, grant, existing) {
+  let html = '';
+  const chosenClass = existing.chosenClass || '';
+
+  for (const ch of (grant.choices || [])) {
+    const locked = existing[ch.id] && !grant.classChoice; // lock non-class choices if already set
+    const currentVal = existing[ch.id] || (Array.isArray(existing[ch.id]) ? [] : '');
+
+    html += `<div style="margin-bottom:12px">
+      <div class="field-label" style="margin-bottom:6px">${ch.prompt}:</div>`;
+
+    if (locked) {
+      const v = Array.isArray(currentVal) ? currentVal.join(', ') : currentVal;
+      html += `<div style="background:#1a2a1a;border:1px solid #2e6e2e;border-radius:6px;
+                           padding:6px 12px;font-size:12px;color:#6ecc6e">
+                 🔒 ${v} (locked — cannot be changed)
+               </div>`;
+    } else {
+      // Build spell list for this choice
+      const spells = getFeatChoiceSpells(ch, chosenClass);
+      html += `<select id="feat_choice_${ch.id}" class="field-input" style="max-width:380px">
+        <option value="">— Choose —</option>
+        ${spells.map(s=>`<option value="${s}" ${(currentVal===s||currentVal[0]===s)?'selected':''}>${s}${SPELL_DATA[s]?' ('+SPELL_DATA[s].school+')':''}</option>`).join('')}
+      </select>`;
+    }
+    html += '</div>';
+  }
+  return html;
+}
+
+function getFeatChoiceSpells(ch, chosenClass) {
+  // Hard-coded list
+  if (ch.hardList) return ch.hardList;
+  // From class spell list
+  if (ch.fromClass && chosenClass) {
+    const list = SPELL_LISTS[chosenClass];
+    if (!list) return [];
+    const levelKey = ch.level === 0 ? 'cantrips' : ch.level+'st';
+    const altKey   = ch.level === 0 ? 'cantrips' : ['','1st','2nd','3rd'][ch.level] || ch.level+'th';
+    return (list[levelKey] || list[altKey] || []).sort();
+  }
+  // From a specific class list key
+  if (ch.fromListKey) {
+    const list = SPELL_LISTS[ch.fromListKey];
+    if (!list) return [];
+    const levelKey = ch.level === 0 ? 'cantrips' : ['','1st','2nd','3rd','4th','5th'][ch.level];
+    return (list[levelKey] || []).sort();
+  }
+  // Filter SPELL_DATA by school and level
+  if (ch.schools && ch.level !== undefined) {
+    return Object.entries(SPELL_DATA)
+      .filter(([n,d]) => d.level === ch.level && ch.schools.includes(d.school))
+      .map(([n]) => n).sort();
+  }
+  return [];
+}
+
+function refreshMIClassSpells() {
+  // Get current modal state and rebuild choice fields
+  const modal = document.getElementById('feat-spell-setup-modal');
+  if (!modal || modal.style.display==='none') return;
+  const classSel = document.getElementById('mi_class_sel');
+  if (!classSel) return;
+  const chosenClass = classSel.value;
+  const grant = FEAT_SPELL_GRANTS['Magic Initiate'];
+  const existing = {...(state.featChoices['Magic Initiate']||{}), chosenClass};
+  const fieldsDiv = document.getElementById('feat_choice_fields');
+  if (fieldsDiv) fieldsDiv.innerHTML = buildFeatChoiceFields('Magic Initiate', grant, existing);
+}
+
+function confirmFeatSpellSetup(featName) {
+  const grant = FEAT_SPELL_GRANTS[featName];
+  if (!grant) return;
+
+  // Read ability
+  const abilityRadio = document.querySelector('input[name="feat_ability"]:checked');
+  const ability = abilityRadio ? abilityRadio.value : (grant.abilityChoices ? grant.abilityChoices[0] : 'INT');
+
+  // Read class choice if needed
+  let chosenClass = '';
+  if (grant.classChoice) {
+    const classSel = document.getElementById('mi_class_sel');
+    chosenClass = classSel ? classSel.value : '';
+    if (!chosenClass) { showToast('⚠ Please choose a class first', '#6b4a1a'); return; }
+  }
+
+  // Read each choice
+  const choices = { ability, chosenClass };
+  for (const ch of (grant.choices || [])) {
+    const sel = document.getElementById('feat_choice_' + ch.id);
+    if (!sel || !sel.value) {
+      showToast('⚠ Please complete all spell selections', '#6b4a1a');
+      return;
+    }
+    // Don't overwrite locked choices
+    const existing = state.featChoices[featName] || {};
+    if (existing[ch.id] && !grant.classChoice) {
+      choices[ch.id] = existing[ch.id]; // keep locked value
+    } else {
+      choices[ch.id] = sel.value;
+    }
+  }
+
+  // Commit to state
+  state.featChoices[featName] = choices;
+
+  // Initialise use counters for newly chosen spells
+  syncFeatSpellUsesState();
+
+  closeFeatSpellSetup();
+  renderFeatSpells();
+  autoSave();
+  showToast('✓ ' + featName + ' spells configured!');
+}
+
+function closeFeatSpellSetup() {
+  const m = document.getElementById('feat-spell-setup-modal');
+  if (m) m.style.display = 'none';
+}
+
+// ── Modified addFeat: trigger setup if this feat grants spells ──
+// (We patch the existing addFeat below in renderFeats/removeFeat section)
+function addFeatWithSpellCheck(featName) {
+  if (state.selectedFeats.includes(featName)) return;
+  state.selectedFeats.push(featName);
+  renderFeats();
+
+  // If feat grants spells, immediately open setup
+  if (FEAT_SPELL_GRANTS[featName]) {
+    // Give DOM a moment to settle, then open modal
+    setTimeout(() => openFeatSpellSetup(featName), 50);
+  }
+}
+
+
 init();
 </script>
 
@@ -4520,6 +5053,19 @@ init();
   <div style="background:#1a1520;border:1px solid #4a3728;border-radius:8px;max-width:560px;width:100%;max-height:85vh;overflow-y:auto;padding:24px;position:relative">
     <button onclick="closeSpellModal()" style="position:absolute;top:12px;right:14px;background:none;border:none;color:#8a7560;font-size:20px;cursor:pointer;line-height:1">✕</button>
     <div id="spell-modal-content"></div>
+  </div>
+</div>
+
+<!-- ── FEAT SPELL SETUP MODAL ── -->
+<div id="feat-spell-setup-modal" onclick="if(event.target===this)closeFeatSpellSetup()"
+     style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:9999;
+            align-items:center;justify-content:center;padding:20px">
+  <div style="background:#1a1520;border:2px solid #c9a84c;border-radius:10px;
+              max-width:560px;width:100%;max-height:88vh;overflow-y:auto;
+              padding:28px;position:relative">
+    <button onclick="closeFeatSpellSetup()" style="position:absolute;top:12px;right:14px;
+            background:none;border:none;color:#8a7560;font-size:22px;cursor:pointer;line-height:1">✕</button>
+    <div id="feat-spell-setup-body"></div>
   </div>
 </div>
 </body>
