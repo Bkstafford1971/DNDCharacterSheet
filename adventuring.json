@@ -1,0 +1,128 @@
+// adventuring.json
+{
+  "time": {
+    "scales": "The DM determines the time a task requires. In a dungeon, movement happens on a scale of minutes. In a city or wilderness, a scale of hours is often more appropriate. For long journeys, a scale of days works best. In combat, the game relies on rounds (6 seconds each)."
+  },
+  "movement": {
+    "speed": "Every character and monster has a speed, which is the distance in feet that the character or monster can walk in 1 round.",
+    "travel_pace": {
+      "description": "While traveling, a group can move at a normal, fast, or slow pace.",
+      "table": [
+        { "pace": "Fast", "per_minute": "400 feet", "per_hour": "4 miles", "per_day": "30 miles", "effect": "-5 penalty to passive Wisdom (Perception) scores" },
+        { "pace": "Normal", "per_minute": "300 feet", "per_hour": "3 miles", "per_day": "24 miles", "effect": "—" },
+        { "pace": "Slow", "per_minute": "200 feet", "per_hour": "2 miles", "per_day": "18 miles", "effect": "Able to use stealth" }
+      ],
+      "forced_march": "For each additional hour of travel beyond 8 hours, the characters cover the distance shown in the Hour column for their pace, and each character must make a Constitution saving throw at the end of the hour. The DC is 10 + 1 for each hour past 8 hours. On a failure, a character suffers one level of exhaustion.",
+      "mounts_and_vehicles": "A mounted character can ride at a gallop for about an hour, covering twice the usual distance for a fast pace. Characters in waterborne vessels are limited to the speed of the vessel."
+    },
+    "difficult_terrain": "You move at half speed in difficult terrain—moving 1 foot costs 2 feet of speed.",
+    "special_types_of_movement": {
+      "climbing_swimming_crawling": "While climbing or swimming, each foot of movement costs 1 extra foot (2 extra feet in difficult terrain), unless a creature has a climbing or swimming speed. At the DM's option, climbing a slippery vertical surface or gaining any distance in rough water might require a successful Strength (Athletics) check.",
+      "jumping": {
+        "long_jump": "When you make a long jump, you cover a number of feet up to your Strength score if you move at least 10 feet on foot immediately before the jump. When you make a standing long jump, you can leap only half that distance. At the DM's option, you must succeed on a DC 10 Strength (Athletics) check to clear a low obstacle (no taller than a quarter of the jump's distance). When you land in difficult terrain, you must succeed on a DC 10 Dexterity (Acrobatics) check to land on your feet.",
+        "high_jump": "When you make a high jump, you leap into the air a number of feet equal to 3 + your Strength modifier if you move at least 10 feet on foot immediately before the jump. When you make a standing high jump, you can jump only half that distance. You can extend your arms half your height above yourself during the jump."
+      }
+    }
+  },
+  "activity_while_traveling": {
+    "marching_order": "The adventurers should establish a marching order: front rank, middle ranks, back rank. Characters in the front and back ranks need enough room to travel side by side.",
+    "stealth": "While traveling at a slow pace, the characters can move stealthily. As long as they're not in the open, they can try to surprise or sneak by other creatures.",
+    "noticing_threats": "Use the passive Wisdom (Perception) scores of the characters to determine whether anyone in the group notices a hidden threat. While traveling at a fast pace, characters take a -5 penalty to their passive Wisdom (Perception) scores.",
+    "other_activities": [
+      {
+        "activity": "Navigate",
+        "description": "The character can try to prevent the group from becoming lost, making a Wisdom (Survival) check when the DM calls for it."
+      },
+      {
+        "activity": "Draw a Map",
+        "description": "The character can draw a map that records the group's progress. No ability check is required."
+      },
+      {
+        "activity": "Track",
+        "description": "A character can follow the tracks of another creature, making a Wisdom (Survival) check when the DM calls for it."
+      },
+      {
+        "activity": "Forage",
+        "description": "The character can keep an eye out for ready sources of food and water, making a Wisdom (Survival) check when the DM calls for it."
+      }
+    ]
+  },
+  "the_environment": {
+    "falling": "At the end of a fall, a creature takes 1d6 bludgeoning damage for every 10 feet it fell, to a maximum of 20d6. The creature lands prone, unless it avoids taking damage from the fall.",
+    "suffocating": "A creature can hold its breath for a number of minutes equal to 1 + its Constitution modifier (minimum of 30 seconds). When it runs out of breath, it can survive for a number of rounds equal to its Constitution modifier (minimum 1 round). At the start of its next turn, it drops to 0 hit points and is dying.",
+    "vision_and_light": {
+      "lightly_obscured": "In a lightly obscured area, such as dim light, patchy fog, or moderate foliage, creatures have disadvantage on Wisdom (Perception) checks that rely on sight.",
+      "heavily_obscured": "A heavily obscured area—such as darkness, opaque fog, or dense foliage—blocks vision entirely. A creature in a heavily obscured area effectively suffers from the blinded condition.",
+      "illumination": {
+        "bright_light": "Lets most creatures see normally.",
+        "dim_light": "Creates a lightly obscured area.",
+        "darkness": "Creates a heavily obscured area."
+      },
+      "blindsight": "A creature with blindsight can perceive its surroundings without relying on sight, within a specific radius.",
+      "darkvision": "Within a specified range, a creature with darkvision can see in darkness as if the darkness were dim light, so areas of darkness are only lightly obscured. However, the creature can't discern color in darkness, only shades of gray.",
+      "truesight": "A creature with truesight can, out to a specific range, see in normal and magical darkness, see invisible creatures and objects, automatically detect visual illusions and succeed on saving throws against them, and perceives the original form of a shapechanger or a creature that is transformed by magic. Furthermore, the creature can see into the Ethereal Plane."
+    },
+    "food_and_water": {
+      "food": "A character needs one pound of food per day. A character can go without food for a number of days equal to 3 + Constitution modifier (minimum 1). At the end of each day beyond that limit, a character automatically suffers one level of exhaustion.",
+      "water": "A character needs one gallon of water per day, or two gallons per day if the weather is hot. A character who drinks only half that much water must succeed on a DC 15 Constitution saving throw or suffer one level of exhaustion at the end of the day. A character with access to even less water automatically suffers one level of exhaustion at the end of the day."
+    },
+    "interacting_with_objects": {
+      "damaging_objects": "Objects are immune to poison and psychic damage, but otherwise they can be affected by physical and magical attacks. The DM determines an object's Armor Class and hit points. Objects always fail Strength and Dexterity saving throws. When an object drops to 0 hit points, it breaks."
+    }
+  },
+  "social_interaction": {
+    "roleplaying": {
+      "descriptive_approach": "You describe your character's words and actions to the DM and the other players.",
+      "active_approach": "You speak with your character's voice, like an actor taking on a role."
+    },
+    "ability_checks": "Your roleplaying efforts can alter an NPC's attitude, but the DM might call for a Charisma check or other appropriate check at any point during an interaction. Pay attention to your skill proficiencies when interacting with NPCs."
+  },
+  "resting": {
+    "short_rest": {
+      "duration": "At least 1 hour long.",
+      "activities": "A character does nothing more strenuous than eating, drinking, reading, and tending to wounds.",
+      "hit_dice_recovery": "A character can spend one or more Hit Dice at the end of a short rest. For each Hit Die spent, the player rolls the die and adds the character's Constitution modifier. The character regains hit points equal to the total."
+    },
+    "long_rest": {
+      "duration": "At least 8 hours long.",
+      "activities": "A character sleeps or performs light activity: reading, talking, eating, or standing watch for no more than 2 hours.",
+      "interruption": "If the rest is interrupted by a period of strenuous activity—at least 1 hour of walking, fighting, casting spells, or similar adventuring activity—the characters must begin the rest again.",
+      "benefits": "At the end of a long rest, a character regains all lost hit points. The character also regains spent Hit Dice, up to a number of dice equal to half of the character's total number of them.",
+      "limitation": "A character can't benefit from more than one long rest in a 24-hour period, and a character must have at least 1 hit point at the start of the rest."
+    }
+  },
+  "between_adventures": {
+    "lifestyle_expenses": "Between adventures, you choose a particular quality of life and pay the cost of maintaining that lifestyle. Lifestyle can affect the way other individuals and groups react to you.",
+    "lifestyle_table": [
+      { "lifestyle": "Wretched", "price_per_day": "—" },
+      { "lifestyle": "Squalid", "price_per_day": "1 sp" },
+      { "lifestyle": "Poor", "price_per_day": "2 sp" },
+      { "lifestyle": "Modest", "price_per_day": "1 gp" },
+      { "lifestyle": "Comfortable", "price_per_day": "2 gp" },
+      { "lifestyle": "Wealthy", "price_per_day": "4 gp" },
+      { "lifestyle": "Aristocratic", "price_per_day": "10 gp minimum" }
+    ],
+    "downtime_activities": [
+      {
+        "name": "Crafting",
+        "description": "You can craft nonmagical objects. You must be proficient with tools related to the object. For every day of downtime, you can craft items with a total market value not exceeding 5 gp, expending raw materials worth half that value. Multiple characters can combine their efforts. While crafting, you can maintain a modest lifestyle without paying 1 gp per day, or a comfortable lifestyle at half cost."
+      },
+      {
+        "name": "Practicing a Profession",
+        "description": "You can work between adventures, allowing you to maintain a modest lifestyle without having to pay 1 gp per day. If you are a member of an organization that can provide gainful employment, you earn enough to support a comfortable lifestyle. If you have proficiency in the Performance skill and put it to use, you earn enough to support a wealthy lifestyle."
+      },
+      {
+        "name": "Recuperating",
+        "description": "You can use downtime to recover from a debilitating injury, disease, or poison. After three days of downtime spent recuperating, you can make a DC 15 Constitution saving throw. On a success, you can end one effect that prevents you from regaining hit points, or for the next 24 hours gain advantage on saving throws against one disease or poison currently affecting you."
+      },
+      {
+        "name": "Researching",
+        "description": "You can perform research, gaining insight into mysteries. The DM determines whether the information is available, how many days it will take, and whether there are any restrictions. For each day of research, you must spend 1 gp to cover your expenses."
+      },
+      {
+        "name": "Training",
+        "description": "You can spend time learning a new language or training with a set of tools. You must find an instructor willing to teach you. The training lasts for 250 days and costs 1 gp per day. After that, you learn the new language or gain proficiency with the new tool."
+      }
+    ]
+  }
+}

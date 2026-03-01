@@ -1,0 +1,176 @@
+﻿// armor.json
+{
+  "armor_proficiency": {
+    "description": "Anyone can put on a suit of armor or strap a shield to an arm. Only those proficient in the armor's use know how to wear it effectively, however. Your class gives you proficiency with certain types of armor.",
+    "lack_of_proficiency": "If you wear armor that you lack proficiency with, you have disadvantage on any ability check, saving throw, or attack roll that involves Strength or Dexterity, and you can't cast spells."
+  },
+  "armor_categories": [
+    {
+      "category": "Light Armor",
+      "description": "Made from supple and thin materials, light armor favors agile adventurers since it offers some protection without sacrificing mobility. If you wear light armor, you add your Dexterity modifier to the base number from your armor type to determine your Armor Class.",
+      "armor": [
+        {
+          "name": "Padded",
+          "cost": "5 gp",
+          "armor_class": "11 + Dex modifier",
+          "strength_requirement": null,
+          "stealth_disadvantage": true,
+          "weight": "8 lb.",
+          "description": "Padded armor consists of quilted layers of cloth and batting."
+        },
+        {
+          "name": "Leather",
+          "cost": "10 gp",
+          "armor_class": "11 + Dex modifier",
+          "strength_requirement": null,
+          "stealth_disadvantage": false,
+          "weight": "10 lb.",
+          "description": "The breastplate and shoulder protectors of this armor are made of leather that has been stiffened by being boiled in oil. The rest of the armor is made of softer and more flexible materials."
+        },
+        {
+          "name": "Studded Leather",
+          "cost": "45 gp",
+          "armor_class": "12 + Dex modifier",
+          "strength_requirement": null,
+          "stealth_disadvantage": false,
+          "weight": "13 lb.",
+          "description": "Made from tough but flexible leather, studded leather is reinforced with close-set rivets or spikes."
+        }
+      ]
+    },
+    {
+      "category": "Medium Armor",
+      "description": "Medium armor offers more protection than light armor, but it also impairs movement more. If you wear medium armor, you add your Dexterity modifier, to a maximum of +2, to the base number from your armor type to determine your Armor Class.",
+      "armor": [
+        {
+          "name": "Hide",
+          "cost": "10 gp",
+          "armor_class": "12 + Dex modifier (max 2)",
+          "strength_requirement": null,
+          "stealth_disadvantage": false,
+          "weight": "12 lb.",
+          "description": "This crude armor consists of thick furs and pelts. It is commonly worn by barbarian tribes, evil humanoids, and other folk who lack access to the tools and materials needed to create better armor."
+        },
+        {
+          "name": "Chain Shirt",
+          "cost": "50 gp",
+          "armor_class": "13 + Dex modifier (max 2)",
+          "strength_requirement": null,
+          "stealth_disadvantage": false,
+          "weight": "20 lb.",
+          "description": "Made of interlocking metal rings, a chain shirt is worn between layers of clothing or leather. This armor offers modest protection to the wearer's upper body and allows the sound of the rings rubbing against one another to be muffled by outer layers."
+        },
+        {
+          "name": "Scale Mail",
+          "cost": "50 gp",
+          "armor_class": "14 + Dex modifier (max 2)",
+          "strength_requirement": null,
+          "stealth_disadvantage": true,
+          "weight": "45 lb.",
+          "description": "This armor consists of a coat and leggings (and perhaps a separate skirt) of leather covered with overlapping pieces of metal, much like the scales of a fish. The suit includes gauntlets."
+        },
+        {
+          "name": "Breastplate",
+          "cost": "400 gp",
+          "armor_class": "14 + Dex modifier (max 2)",
+          "strength_requirement": null,
+          "stealth_disadvantage": false,
+          "weight": "20 lb.",
+          "description": "This armor consists of a fitted metal chest piece worn with supple leather. Although it leaves the legs and arms relatively unprotected, this armor provides good protection for the wearer's vital organs while leaving the wearer relatively unencumbered."
+        },
+        {
+          "name": "Half Plate",
+          "cost": "750 gp",
+          "armor_class": "15 + Dex modifier (max 2)",
+          "strength_requirement": null,
+          "stealth_disadvantage": true,
+          "weight": "40 lb.",
+          "description": "Half plate consists of shaped metal plates that cover most of the wearer's body. It does not include leg protection beyond simple greaves that are attached with leather straps."
+        }
+      ]
+    },
+    {
+      "category": "Heavy Armor",
+      "description": "Heavier armor interferes with the wearer's ability to move quickly, stealthily, and freely. If the Armor table shows 'Str 13' or 'Str 15' in the Strength column for an armor type, the armor reduces the wearer's speed by 10 feet unless the wearer has a Strength score equal to or higher than the listed score.",
+      "armor": [
+        {
+          "name": "Ring Mail",
+          "cost": "30 gp",
+          "armor_class": "14",
+          "strength_requirement": null,
+          "stealth_disadvantage": true,
+          "weight": "40 lb.",
+          "description": "This armor is leather armor with heavy rings sewn into it. The rings help reinforce the armor against blows from swords and axes. Ring mail is inferior to chain mail, and it's usually worn only by those who can't afford better armor."
+        },
+        {
+          "name": "Chain Mail",
+          "cost": "75 gp",
+          "armor_class": "16",
+          "strength_requirement": "Str 13",
+          "stealth_disadvantage": true,
+          "weight": "55 lb.",
+          "description": "Made of interlocking metal rings, chain mail includes a layer of quilted fabric worn underneath the mail to prevent chafing and to cushion the impact of blows. The suit includes gauntlets."
+        },
+        {
+          "name": "Splint",
+          "cost": "200 gp",
+          "armor_class": "17",
+          "strength_requirement": "Str 15",
+          "stealth_disadvantage": true,
+          "weight": "60 lb.",
+          "description": "This armor is made of narrow vertical strips of metal riveted to a backing of leather that are worn over cloth padding. Flexible chain mail protects the joints."
+        },
+        {
+          "name": "Plate",
+          "cost": "1500 gp",
+          "armor_class": "18",
+          "strength_requirement": "Str 15",
+          "stealth_disadvantage": true,
+          "weight": "65 lb.",
+          "description": "Plate consists of shaped, interlocking metal plates to cover the entire body. A suit of plate includes gauntlets, heavy leather boots, a visored helmet, and thick layers of padding underneath the armor. Buckles and straps distribute the weight over the body."
+        }
+      ]
+    },
+    {
+      "category": "Shield",
+      "armor": [
+        {
+          "name": "Shield",
+          "cost": "10 gp",
+          "armor_class": "+2",
+          "strength_requirement": null,
+          "stealth_disadvantage": false,
+          "weight": "6 lb.",
+          "description": "A shield is made from wood or metal and is carried in one hand. Wielding a shield increases your Armor Class by 2. You can benefit from only one shield at a time."
+        }
+      ]
+    }
+  ],
+  "getting_into_and_out_of_armor": {
+    "description": "The time it takes to don or doff armor depends on the armor's category.",
+    "don": "This is the time it takes to put on armor. You benefit from the armor's AC only if you take the full time to don the suit of armor.",
+    "doff": "This is the time it takes to take off armor. If you have help, reduce this time by half.",
+    "times": [
+      {
+        "category": "Light Armor",
+        "don": "1 minute",
+        "doff": "1 minute"
+      },
+      {
+        "category": "Medium Armor",
+        "don": "5 minutes",
+        "doff": "1 minute"
+      },
+      {
+        "category": "Heavy Armor",
+        "don": "10 minutes",
+        "doff": "5 minutes"
+      },
+      {
+        "category": "Shield",
+        "don": "1 action",
+        "doff": "1 action"
+      }
+    ]
+  }
+}

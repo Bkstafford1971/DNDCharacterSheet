@@ -1,0 +1,172 @@
+// ability_scores.json
+[
+  {
+    "name": "Strength",
+    "abbreviation": "STR",
+    "description": "Strength measures bodily power, athletic training, and the extent to which you can exert raw physical force.",
+    "important_for": ["Barbarian", "Fighter", "Paladin"],
+    "skills": [
+      {
+        "name": "Athletics",
+        "description": "Covers difficult situations you encounter while climbing, jumping, or swimming."
+      }
+    ],
+    "checks": [
+      "Force open a stuck, locked, or barred door",
+      "Break free of bonds",
+      "Push through a tunnel that is too small",
+      "Hang on to a wagon while being dragged behind it",
+      "Tip over a statue",
+      "Keep a boulder from rolling"
+    ],
+    "attack_damage": "Used for melee weapon attacks and damage. Also used for thrown weapons.",
+    "carrying_capacity": "Carrying capacity is Strength score × 15. Push/drag/lift up to 30 × Strength score."
+  },
+  {
+    "name": "Dexterity",
+    "abbreviation": "DEX",
+    "description": "Dexterity measures agility, reflexes, and balance.",
+    "important_for": ["Monk", "Ranger", "Rogue"],
+    "skills": [
+      {
+        "name": "Acrobatics",
+        "description": "Stay on your feet in tricky situations, perform acrobatic stunts."
+      },
+      {
+        "name": "Sleight of Hand",
+        "description": "Perform legerdemain, manual trickery, pick pockets, conceal objects."
+      },
+      {
+        "name": "Stealth",
+        "description": "Conceal yourself from enemies, slink past guards, sneak up on someone."
+      }
+    ],
+    "checks": [
+      "Control a heavily laden cart on a steep descent",
+      "Steer a chariot around a tight turn",
+      "Pick a lock",
+      "Disable a trap",
+      "Securely tie up a prisoner",
+      "Wriggle free of bonds",
+      "Play a stringed instrument",
+      "Craft a small or detailed object"
+    ],
+    "attack_damage": "Used for ranged weapon attacks and damage. Also used for finesse weapons.",
+    "armor_class": "Added to AC depending on armor worn.",
+    "initiative": "Dexterity check determines initiative order in combat."
+  },
+  {
+    "name": "Constitution",
+    "abbreviation": "CON",
+    "description": "Constitution measures health, stamina, and vital force.",
+    "important_for": ["Everyone"],
+    "skills": [],
+    "checks": [
+      "Hold your breath",
+      "March or labor for hours without rest",
+      "Go without sleep",
+      "Survive without food or water",
+      "Quaff an entire stein of ale in one go"
+    ],
+    "hit_points": "Your Constitution modifier contributes to your hit points each level."
+  },
+  {
+    "name": "Intelligence",
+    "abbreviation": "INT",
+    "description": "Intelligence measures mental acuity, accuracy of recall, and the ability to reason.",
+    "important_for": ["Wizard"],
+    "skills": [
+      {
+        "name": "Arcana",
+        "description": "Recall lore about spells, magic items, eldritch symbols, magical traditions, planes of existence, and their inhabitants."
+      },
+      {
+        "name": "History",
+        "description": "Recall lore about historical events, legendary people, ancient kingdoms, past disputes, recent wars, and lost civilizations."
+      },
+      {
+        "name": "Investigation",
+        "description": "Look for clues and make deductions based on them. Find hidden objects, discern weapon type from wounds, determine weakest point in a tunnel."
+      },
+      {
+        "name": "Nature",
+        "description": "Recall lore about terrain, plants and animals, weather, and natural cycles."
+      },
+      {
+        "name": "Religion",
+        "description": "Recall lore about deities, rites and prayers, religious hierarchies, holy symbols, and secret cults."
+      }
+    ],
+    "checks": [
+      "Communicate with a creature without using words",
+      "Estimate the value of a precious item",
+      "Pull together a disguise to pass as a city guard",
+      "Forge a document",
+      "Recall lore about a craft or trade",
+      "Win a game of skill"
+    ],
+    "spellcasting": "Wizards use Intelligence as their spellcasting ability."
+  },
+  {
+    "name": "Wisdom",
+    "abbreviation": "WIS",
+    "description": "Wisdom reflects how attuned you are to the world around you and represents perceptiveness and intuition.",
+    "important_for": ["Cleric", "Druid"],
+    "skills": [
+      {
+        "name": "Animal Handling",
+        "description": "Calm a domesticated animal, keep a mount from getting spooked, intuit an animal's intentions, control your mount during a risky maneuver."
+      },
+      {
+        "name": "Insight",
+        "description": "Determine the true intentions of a creature, detect lies, predict someone's next move."
+      },
+      {
+        "name": "Medicine",
+        "description": "Stabilize a dying companion, diagnose an illness."
+      },
+      {
+        "name": "Perception",
+        "description": "Spot, hear, or otherwise detect the presence of something. General awareness of surroundings."
+      },
+      {
+        "name": "Survival",
+        "description": "Follow tracks, hunt wild game, guide through frozen wastelands, identify signs of creatures, predict weather, avoid natural hazards."
+      }
+    ],
+    "checks": [
+      "Get a gut feeling about what course of action to follow",
+      "Discern whether a seemingly dead or living creature is undead"
+    ],
+    "spellcasting": "Clerics, druids, and rangers use Wisdom as their spellcasting ability."
+  },
+  {
+    "name": "Charisma",
+    "abbreviation": "CHA",
+    "description": "Charisma measures your ability to interact effectively with others. It includes confidence, eloquence, and a commanding personality.",
+    "important_for": ["Bard", "Paladin", "Sorcerer", "Warlock"],
+    "skills": [
+      {
+        "name": "Deception",
+        "description": "Convincingly hide the truth, fast-talk a guard, con a merchant, pass yourself off in a disguise, maintain a straight face while lying."
+      },
+      {
+        "name": "Intimidation",
+        "description": "Influence someone through threats, pry information from a prisoner, convince street thugs to back down."
+      },
+      {
+        "name": "Performance",
+        "description": "Delight an audience with music, dance, acting, storytelling, or other entertainment."
+      },
+      {
+        "name": "Persuasion",
+        "description": "Influence someone with tact, social graces, or good nature. Convince a chamberlain to let you see the king, negotiate peace, inspire a crowd."
+      }
+    ],
+    "checks": [
+      "Find the best person to talk to for news, rumors, and gossip",
+      "Blend into a crowd to get the sense of key topics of conversation"
+    ],
+    "spellcasting": "Bards, paladins, sorcerers, and warlocks use Charisma as their spellcasting ability."
+  }
+]

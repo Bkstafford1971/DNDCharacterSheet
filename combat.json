@@ -1,0 +1,191 @@
+// combat.json
+{
+  "order_of_combat": {
+    "surprise": {
+      "description": "The DM determines who might be surprised. If neither side tries to be stealthy, they automatically notice each other. Otherwise, the DM compares the Dexterity (Stealth) checks of anyone hiding with the passive Wisdom (Perception) score of each creature on the opposing side. Any character or monster that doesn't notice a threat is surprised at the start of the encounter.",
+      "effects": "If you're surprised, you can't move or take an action on your first turn of the combat, and you can't take a reaction until that turn ends. A member of a group can be surprised even if the other members aren't."
+    },
+    "initiative": {
+      "description": "Initiative determines the order of turns during combat. When combat starts, every participant makes a Dexterity check to determine their place in the initiative order. The DM makes one roll for an entire group of identical creatures.",
+      "ranking": "The DM ranks the combatants in order from the one with the highest Dexterity check total to the one with the lowest. This is the order (called the initiative order) in which they act during each round. The initiative order remains the same from round to round.",
+      "ties": "If a tie occurs, the DM decides the order among tied DM-controlled creatures, and the players decide the order among their tied characters. The DM can decide the order if the tie is between a monster and a player character. Optionally, the DM can have the tied characters and monsters each roll a d20 to determine the order, highest roll going first."
+    },
+    "your_turn": {
+      "move": "On your turn, you can move a distance up to your speed and take one action. You decide whether to move first or take your action first.",
+      "actions": "The most common actions you can take are described in 'Actions in Combat'.",
+      "bonus_actions": "Various class features, spells, and other abilities let you take an additional action on your turn called a bonus action. You can take only one bonus action on your turn.",
+      "other_activity": "Your turn can include a variety of flourishes that require neither your action nor your move. You can communicate however you are able, through brief utterances and gestures. You can also interact with one object or feature of the environment for free."
+    },
+    "reactions": {
+      "description": "A reaction is an instant response to a trigger of some kind, which can occur on your turn or on someone else's. The opportunity attack is the most common type of reaction.",
+      "limitation": "When you take a reaction, you can't take another one until the start of your next turn."
+    }
+  },
+  "actions_in_combat": [
+    {
+      "name": "Attack",
+      "description": "With this action, you make one melee or ranged attack. Certain features allow you to make more than one attack with this action."
+    },
+    {
+      "name": "Cast a Spell",
+      "description": "Spellcasters have access to spells and can use them to great effect in combat. Most spells have a casting time of 1 action."
+    },
+    {
+      "name": "Dash",
+      "description": "When you take the Dash action, you gain extra movement for the current turn. The increase equals your speed, after applying any modifiers."
+    },
+    {
+      "name": "Disengage",
+      "description": "If you take the Disengage action, your movement doesn't provoke opportunity attacks for the rest of the turn."
+    },
+    {
+      "name": "Dodge",
+      "description": "When you take the Dodge action, you focus entirely on avoiding attacks. Until the start of your next turn, any attack roll made against you has disadvantage if you can see the attacker, and you make Dexterity saving throws with advantage. You lose this benefit if you are incapacitated or if your speed drops to 0."
+    },
+    {
+      "name": "Help",
+      "description": "You can lend your aid to another creature. The creature you aid gains advantage on the next ability check it makes to perform the task you are helping with. Alternatively, you can aid a friendly creature in attacking a creature within 5 feet of you. If your ally attacks the target before your next turn, the first attack roll is made with advantage."
+    },
+    {
+      "name": "Hide",
+      "description": "When you take the Hide action, you make a Dexterity (Stealth) check in an attempt to hide. If you succeed, you gain certain benefits as described in 'Unseen Attackers and Targets'."
+    },
+    {
+      "name": "Ready",
+      "description": "You can take the Ready action on your turn so that you can act later in the round using your reaction. First, you decide what perceivable circumstance will trigger your reaction. Then, you choose the action you will take in response to that trigger, or you choose to move up to your speed in response to it. When the trigger occurs, you can either take your reaction right after the trigger finishes or ignore the trigger. When you ready a spell, you cast it as normal but hold its energy, which you release with your reaction when the trigger occurs. To be readied, a spell must have a casting time of 1 action, and holding onto the spell's magic requires concentration."
+    },
+    {
+      "name": "Search",
+      "description": "When you take the Search action, you devote your attention to finding something. Depending on the nature of your search, the DM might have you make a Wisdom (Perception) check or an Intelligence (Investigation) check."
+    },
+    {
+      "name": "Use an Object",
+      "description": "When an object requires your action for its use, you take the Use an Object action. This action is also useful when you want to interact with more than one object on your turn."
+    },
+    {
+      "name": "Improvising an Action",
+      "description": "Your character can do things not covered by the actions above. The DM tells you whether that action is possible and what kind of roll you need to make, if any."
+    }
+  ],
+  "movement_and_position": {
+    "breaking_up_move": "You can break up your movement on your turn, using some of your speed before and after your action.",
+    "moving_between_attacks": "If you take an action that includes more than one weapon attack, you can break up your movement even further by moving between those attacks.",
+    "using_different_speeds": "If you have more than one speed, you can switch back and forth between your speeds during your move. Subtract the distance you've already moved from the new speed to determine how much farther you can move.",
+    "difficult_terrain": "Every foot of movement in difficult terrain costs 1 extra foot. The space of another creature, whether hostile or not, also counts as difficult terrain.",
+    "being_prone": {
+      "dropping_prone": "You can drop prone without using any of your speed.",
+      "standing_up": "Standing up costs an amount of movement equal to half your speed.",
+      "moving_while_prone": "To move while prone, you must crawl or use magic such as teleportation. Every foot of movement while crawling costs 1 extra foot."
+    },
+    "moving_around_other_creatures": {
+      "nonhostile": "You can move through a nonhostile creature's space.",
+      "hostile": "You can move through a hostile creature's space only if the creature is at least two sizes larger or smaller than you. You can't willingly end your move in its space."
+    },
+    "flying_movement": "If a flying creature is knocked prone, has its speed reduced to 0, or is otherwise deprived of the ability to move, the creature falls, unless it has the ability to hover or it is being held aloft by magic.",
+    "creature_size": {
+      "space": {
+        "Tiny": "2½ by 2½ ft.",
+        "Small": "5 by 5 ft.",
+        "Medium": "5 by 5 ft.",
+        "Large": "10 by 10 ft.",
+        "Huge": "15 by 15 ft.",
+        "Gargantuan": "20 by 20 ft. or larger"
+      },
+      "squeezing": "A creature can squeeze through a space that is large enough for a creature one size smaller than it. While squeezing, a creature must spend 1 extra foot for every foot it moves there, and it has disadvantage on attack rolls and Dexterity saving throws. Attack rolls against the creature have advantage while it's in the smaller space."
+    },
+    "variant_playing_on_a_grid": {
+      "squares": "Each square on the grid represents 5 feet.",
+      "speed": "Move square by square. Translate your speed into squares by dividing by 5.",
+      "entering_a_square": "To enter a square, you must have at least 1 square of movement left, even if the square is diagonally adjacent. Diagonal movement can't cross the corner of a wall or other terrain feature that fills its space.",
+      "ranges": "To determine range on a grid, count squares from a square adjacent to one creature to the space of the other, counting by the shortest route."
+    }
+  },
+  "making_an_attack": {
+    "steps": [
+      "1. Choose a target. Pick a target within your attack's range: a creature, an object, or a location.",
+      "2. Determine modifiers. The DM determines whether the target has cover and whether you have advantage or disadvantage against the target.",
+      "3. Resolve the attack. You make the attack roll. On a hit, you roll damage."
+    ],
+    "attack_rolls": {
+      "roll": "To make an attack roll, roll a d20 and add the appropriate modifiers. If the total equals or exceeds the target's Armor Class (AC), the attack hits.",
+      "modifiers": "The two most common modifiers are an ability modifier and the character's proficiency bonus.",
+      "rolling_1_or_20": "If the d20 roll for an attack is a 20, the attack hits regardless of any modifiers or the target's AC. In addition, the attack is a critical hit. If the roll is a 1, the attack misses regardless of any modifiers or the target's AC."
+    },
+    "unseen_attackers_and_targets": {
+      "attacking_an_unseen_target": "When you attack a target that you can't see, you have disadvantage on the attack roll. If the target isn't in the location you targeted, you automatically miss.",
+      "unseen_attacker": "When a creature can't see you, you have advantage on attack rolls against it.",
+      "hidden": "If you are hidden—both unseen and unheard—when you make an attack, you give away your location when the attack hits or misses."
+    },
+    "ranged_attacks": {
+      "range": "You can make ranged attacks only against targets within a specified range. Some ranged attacks have two ranges; the smaller is normal range, the larger is long range. Your attack roll has disadvantage when your target is beyond normal range, and you can't attack a target beyond the long range.",
+      "close_combat": "When you make a ranged attack with a weapon, a spell, or some other means, you have disadvantage on the attack roll if you are within 5 feet of a hostile creature who can see you and who isn't incapacitated."
+    },
+    "melee_attacks": {
+      "reach": "Most creatures have a 5-foot reach and can thus attack targets within 5 feet of them. Certain creatures have melee attacks with a greater reach.",
+      "opportunity_attacks": "You can make an opportunity attack when a hostile creature that you can see moves out of your reach. To make the opportunity attack, you use your reaction to make one melee attack against the provoking creature. The attack interrupts the provoking creature's movement. You can avoid provoking an opportunity attack by taking the Disengage action."
+    },
+    "two_weapon_fighting": "When you take the Attack action and attack with a light melee weapon that you're holding in one hand, you can use a bonus action to attack with a different light melee weapon that you're holding in the other hand. You don't add your ability modifier to the damage of the bonus attack, unless that modifier is negative.",
+    "grappling": {
+      "initiating": "When you want to grab a creature or wrestle with it, you can use the Attack action to make a special melee attack, a grapple. The target must be no more than one size larger than you, and it must be within your reach. Using at least one free hand, you make a Strength (Athletics) check contested by the target's Strength (Athletics) or Dexterity (Acrobatics) check. If you succeed, you subject the target to the grappled condition.",
+      "escaping": "A grappled creature can use its action to escape. To do so, it must succeed on a Strength (Athletics) or Dexterity (Acrobatics) check contested by your Strength (Athletics) check.",
+      "moving": "When you move, you can drag or carry the grappled creature with you, but your speed is halved, unless the creature is two or more sizes smaller than you."
+    },
+    "shoving_a_creature": {
+      "initiating": "Using the Attack action, you can make a special melee attack to shove a creature, either to knock it prone or push it away from you. The target must be no more than one size larger than you, and it must be within your reach. You make a Strength (Athletics) check contested by the target's Strength (Athletics) or Dexterity (Acrobatics) check. If you win, you either knock the target prone or push it 5 feet away from you."
+    }
+  },
+  "cover": {
+    "half_cover": {
+      "bonus": "+2 bonus to AC and Dexterity saving throws",
+      "description": "A target has half cover if an obstacle blocks at least half of its body. The obstacle might be a low wall, a large piece of furniture, a narrow tree trunk, or a creature."
+    },
+    "three_quarters_cover": {
+      "bonus": "+5 bonus to AC and Dexterity saving throws",
+      "description": "A target has three-quarters cover if about three-quarters of it is covered by an obstacle. The obstacle might be a portcullis, an arrow slit, or a thick tree trunk."
+    },
+    "total_cover": {
+      "description": "A target with total cover can't be targeted directly by an attack or a spell, although some spells can reach such a target by including it in an area of effect."
+    }
+  },
+  "damage_and_healing": {
+    "hit_points": "Hit points represent a combination of physical and mental durability, the will to live, and luck. A creature's current hit points can be any number from the creature's hit point maximum down to 0.",
+    "damage_rolls": "Each weapon, spell, and harmful monster ability specifies the damage it deals. You roll the damage die or dice, add any modifiers, and apply the damage to your target.",
+    "critical_hits": "When you score a critical hit, you get to roll extra dice for the attack's damage against the target. Roll all of the attack's damage dice twice and add them together. Then add any relevant modifiers as normal.",
+    "damage_types": [
+      "Acid", "Bludgeoning", "Cold", "Fire", "Force", "Lightning", "Necrotic", "Piercing", "Poison", "Psychic", "Radiant", "Slashing", "Thunder"
+    ],
+    "damage_resistance_and_vulnerability": {
+      "resistance": "If a creature or an object has resistance to a damage type, damage of that type is halved against it.",
+      "vulnerability": "If a creature or an object has vulnerability to a damage type, damage of that type is doubled against it.",
+      "order": "Resistance and then vulnerability are applied after all other modifiers to damage.",
+      "multiple_instances": "Multiple instances of resistance or vulnerability that affect the same damage type count as only one instance."
+    },
+    "healing": "When a creature receives healing of any kind, hit points regained are added to its current hit points. A creature's hit points can't exceed its hit point maximum.",
+    "dropping_to_0_hit_points": {
+      "instant_death": "When damage reduces you to 0 hit points and there is damage remaining, you die if the remaining damage equals or exceeds your hit point maximum.",
+      "falling_unconscious": "If damage reduces you to 0 hit points and fails to kill you, you fall unconscious. This unconsciousness ends if you regain any hit points.",
+      "death_saving_throws": "Whenever you start your turn with 0 hit points, you must make a special saving throw, called a death saving throw. Roll a d20. If the roll is 10 or higher, you succeed. Otherwise, you fail. On your third success, you become stable. On your third failure, you die. The number of both is reset to zero when you regain any hit points or become stable. Rolling a 1 counts as two failures. Rolling a 20 regains 1 hit point. If you take any damage while at 0 hit points, you suffer a death saving throw failure. If the damage is from a critical hit, you suffer two failures instead.",
+      "stabilizing_a_creature": "You can use your action to administer first aid to an unconscious creature and attempt to stabilize it, which requires a successful DC 10 Wisdom (Medicine) check. A stable creature doesn't make death saving throws, but it does remain unconscious. The creature stops being stable, and must start making death saving throws again, if it takes any damage. A stable creature that isn't healed regains 1 hit point after 1d4 hours.",
+      "monsters_and_death": "Most DMs have a monster die the instant it drops to 0 hit points, rather than having it fall unconscious and make death saving throws. Mighty villains and special nonplayer characters are common exceptions.",
+      "knocking_a_creature_out": "When an attacker reduces a creature to 0 hit points with a melee attack, the attacker can knock the creature out. The creature falls unconscious and is stable."
+    },
+    "temporary_hit_points": {
+      "description": "Some spells and special abilities confer temporary hit points. They are a buffer against damage. When you have temporary hit points and take damage, they are lost first, and any leftover damage carries over to your normal hit points.",
+      "duration": "Unless a feature that grants you temporary hit points has a duration, they last until they're depleted or you finish a long rest.",
+      "limitations": "Healing can't restore temporary hit points, and they can't be added together. If you have 0 hit points, receiving temporary hit points doesn't restore you to consciousness or stabilize you."
+    }
+  },
+  "mounted_combat": {
+    "mounting_and_dismounting": "Once during your move, you can mount a creature that is within 5 feet of you or dismount. Doing so costs an amount of movement equal to half your speed.",
+    "falling_off": "If an effect moves your mount against its will while you're on it, you must succeed on a DC 10 Dexterity saving throw or fall off, landing prone in a space within 5 feet of it. If you're knocked prone while mounted, you must make the same saving throw. If your mount is knocked prone, you can use your reaction to dismount it as it falls and land on your feet. Otherwise, you are dismounted and fall prone.",
+    "controlling_a_mount": {
+      "controlled_mount": "You can control a mount only if it has been trained to accept a rider. The initiative of a controlled mount changes to match yours when you mount it. It moves as you direct it, and it has only three action options: Dash, Disengage, and Dodge.",
+      "independent_mount": "An independent mount retains its place in the initiative order. It moves and acts as it wishes."
+    }
+  },
+  "underwater_combat": {
+    "melee_attacks": "When making a melee weapon attack, a creature that doesn't have a swimming speed has disadvantage on the attack roll unless the weapon is a dagger, javelin, shortsword, spear, or trident.",
+    "ranged_attacks": "A ranged weapon attack automatically misses a target beyond the weapon's normal range. Even against a target within normal range, the attack roll has disadvantage unless the weapon is a crossbow, a net, or a weapon that is thrown like a javelin (including a spear, trident, or dart).",
+    "fire_resistance": "Creatures and objects that are fully immersed in water have resistance to fire damage."
+  }
+}

@@ -1,0 +1,796 @@
+[
+  {
+    "name": "Aberrant Heir",
+    "description": "You carry the mark of aberrant magic in your bloodline, a heritage that sets you apart from others and grants you strange powers.",
+    "skill_proficiencies": ["History", "Intimidation"],
+    "tool_proficiencies": ["Disguise kit"],
+    "languages": [],
+    "equipment": [
+      "A dagger",
+      "A disguise kit",
+      "A costume",
+      "Traveler's clothes",
+      "16 GP"
+    ],
+    "feature": {
+      "name": "Aberrant Dragonmark",
+      "description": "You possess an aberrant dragonmark, a strange and unpredictable magical brand that grants you unusual powers. This mark manifests in ways that are unique to you and often draws suspicion from others."
+    }
+  },
+  {
+    "name": "Anthropologist",
+    "description": "You have spent your adult life away from your homeland, living among people different from your kin. You came to understand foreign cultures and their ways, eventually being treated as one of their own.",
+    "skill_proficiencies": ["Insight", "Religion"],
+    "tool_proficiencies": [],
+    "languages": ["Two of your choice"],
+    "equipment": [
+      "A leather-bound diary",
+      "A bottle of ink",
+      "An ink pen",
+      "A set of traveler's clothes",
+      "One trinket of special significance",
+      "A pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Adept Linguist",
+      "description": "You can communicate with humanoids who don't speak any language you know. You must observe the humanoids interacting with one another for at least 1 day, after which you learn a handful of important words, expressions, and gestures—enough to communicate on a rudimentary level."
+    }
+  },
+  {
+    "name": "Archaeologist",
+    "description": "You have spent your life uncovering the secrets of the past, delving into ancient ruins and deciphering lost languages to piece together history's greatest mysteries.",
+    "skill_proficiencies": ["History", "Survival"],
+    "tool_proficiencies": ["Cartographer's tools"],
+    "languages": [],
+    "equipment": [
+      "Cartographer's tools",
+      "A bullseye lantern",
+      "A map",
+      "A map or scroll case",
+      "A shovel",
+      "A tent",
+      "Traveler's clothes",
+      "17 GP"
+    ],
+    "feature": {
+      "name": "Skilled",
+      "description": "Your extensive studies and field experience have honed your abilities. You gain proficiency in three skills of your choice, reflecting the diverse knowledge you've accumulated during your expeditions."
+    }
+  },
+  {
+    "name": "Astral Drifter",
+    "description": "You have spent considerable time in the Astral Sea, where you aged little while years passed in the Material Plane. You crossed paths with wandering deities and witnessed cosmic wonders beyond mortal ken.",
+    "skill_proficiencies": ["Insight", "Religion"],
+    "tool_proficiencies": [],
+    "languages": ["Two of your choice (Celestial or Gith recommended)"],
+    "equipment": [
+      "A set of traveler's clothes",
+      "A diary",
+      "An ink pen",
+      "A bottle of ink",
+      "A pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Divine Contact",
+      "description": "In the Astral Sea, you crossed paths with a wandering deity. The encounter was brief and nonviolent, yet it made a lasting impression on you. This deity saw fit to share one secret or obscure bit of cosmic lore with you. You also gain the Magic Initiate feat and must choose cleric for the feat."
+    }
+  },
+  {
+    "name": "Athlete",
+    "description": "You have dedicated your life to athletic competition, honing your body to peak performance and earning fame in the games. Your discipline and training set you apart from ordinary competitors.",
+    "skill_proficiencies": ["Acrobatics", "Athletics"],
+    "tool_proficiencies": ["Vehicles (land)"],
+    "languages": ["One of your choice"],
+    "equipment": [
+      "A bronze discus or leather ball",
+      "A lucky charm or past trophy",
+      "A set of traveler's clothes",
+      "A pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Echoes of Victory",
+      "description": "You have attracted admiration among spectators, fellow athletes, and trainers in the region that hosted your past athletic victories. When visiting any settlement within 100 miles of where you grew up, there is a 50% chance you can find someone there who admires you and is willing to provide information or temporary shelter."
+    }
+  },
+  {
+    "name": "Carouser",
+    "description": "You are a master of revelry and social gatherings, equally at home in the finest parties and the seediest taverns. Your charm and stamina make you the life of any celebration.",
+    "skill_proficiencies": ["Deception", "Persuasion"],
+    "tool_proficiencies": ["One kind of gaming set"],
+    "languages": [],
+    "equipment": [
+      "A dagger",
+      "A gaming set",
+      "Fine clothes",
+      "A glass bottle",
+      "A mirror",
+      "Perfume",
+      "A pouch",
+      "A tinderbox",
+      "19 GP"
+    ],
+    "feature": {
+      "name": "Tireless Reveler",
+      "description": "You possess remarkable stamina when it comes to social activities. You can carouse through the night and still function normally the next day, and you have advantage on saving throws against becoming poisoned by alcohol."
+    }
+  },
+  {
+    "name": "City Watch",
+    "description": "You have served in the city watch, protecting the streets and keeping the peace. Your duties have given you insight into both the criminal element and the lawful operations of urban centers.",
+    "skill_proficiencies": ["Athletics", "Insight"],
+    "tool_proficiencies": [],
+    "languages": ["Two of your choice"],
+    "equipment": [
+      "A uniform in the style of your unit and indicative of your rank",
+      "A horn with which to summon help",
+      "A set of manacles",
+      "A pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Watcher's Eye",
+      "description": "Your experience in enforcing the law, and dealing with lawbreakers, gives you a feel for local laws and criminals. You can easily find the local outpost of the watch or a similar organization, and just as easily pick out the dens of criminal activity in a community."
+    }
+  },
+  {
+    "name": "Variant City Watch (Investigator)",
+    "description": "You have served in the city watch as an investigator, solving crimes and bringing offenders to justice through careful deduction and insight.",
+    "skill_proficiencies": ["Insight", "Investigation"],
+    "tool_proficiencies": [],
+    "languages": ["Two of your choice"],
+    "equipment": [
+      "A uniform in the style of your unit and indicative of your rank",
+      "A horn with which to summon help",
+      "A set of manacles",
+      "A pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Watcher's Eye",
+      "description": "Your experience in enforcing the law, and dealing with lawbreakers, gives you a feel for local laws and criminals. You can easily find the local outpost of the watch or a similar organization, and just as easily pick out the dens of criminal activity in a community."
+    }
+  },
+  {
+    "name": "Clan Crafter",
+    "description": "You learned your craft as part of a dwarven clan or similar tight-knit community, where artisans are respected and their work is held to the highest standards.",
+    "skill_proficiencies": ["History", "Insight"],
+    "tool_proficiencies": ["One type of artisan's tools"],
+    "languages": ["Dwarvish or one of your choice if you already speak Dwarvish"],
+    "equipment": [
+      "A set of artisan's tools with which you are proficient",
+      "A maker's mark chisel",
+      "A set of traveler's clothes",
+      "A pouch containing 5 gp and a gem worth 10 gp"
+    ],
+    "feature": {
+      "name": "Respect of the Stout Folk",
+      "description": "You always have free room and board in any place where shield dwarves or gold dwarves dwell, and the individuals in such a settlement might vie among themselves to determine who can offer you (and possibly your companions) the finest accommodations and assistance."
+    }
+  },
+  {
+    "name": "Cloistered Scholar",
+    "description": "You have spent years in academic seclusion, immersed in study and research within the walls of a great library or university.",
+    "skill_proficiencies": ["History", "One from Arcana, Nature, or Religion"],
+    "tool_proficiencies": [],
+    "languages": ["Two of your choice"],
+    "equipment": [
+      "The scholar's robes of your cloister",
+      "A writing kit (small pouch with a quill, ink, folded parchment, and a small penknife)",
+      "A borrowed book on the subject of your current study",
+      "A pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Library Access",
+      "description": "Though others must often endure extensive interviews and significant fees to gain access to even the most common archives in your library, you have free and easy access to the majority of the library. Additionally, you are likely to gain preferential treatment at other libraries across the Realms, as professional courtesy to a fellow scholar."
+    }
+  },
+  {
+    "name": "Cobalt Scholar",
+    "description": "You are a member of the Cobalt Soul, an organization dedicated to the preservation and pursuit of knowledge. Your life is devoted to study, research, and the protection of truth.",
+    "skill_proficiencies": ["Arcana", "History"],
+    "tool_proficiencies": [],
+    "languages": ["Two of your choice"],
+    "equipment": [
+      "A bottle of black ink",
+      "A quill",
+      "A small knife",
+      "A letter from a dead colleague posing a question you have not yet been able to answer",
+      "A set of common clothes",
+      "A belt pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Researcher",
+      "description": "When you attempt to learn or recall a piece of lore, if you do not know that information, you often know where and from whom you can obtain it. Usually, this information comes from a library, scriptorium, university, or a sage or other learned person or creature."
+    }
+  },
+  {
+    "name": "Courtier",
+    "description": "You have navigated the treacherous waters of noble courts, learning the subtle arts of politics, intrigue, and diplomacy.",
+    "skill_proficiencies": ["Insight", "Persuasion"],
+    "tool_proficiencies": [],
+    "languages": ["Two of your choice"],
+    "equipment": [
+      "A set of fine clothes",
+      "A pouch containing 5 gp"
+    ],
+    "feature": {
+      "name": "Court Functionary",
+      "description": "Your knowledge of how bureaucracies function lets you gain access to the records and inner workings of any noble court or government you encounter. You know who the movers and shakers are, whom to go to for the favors you seek, and what the current intrigues of interest in the group are."
+    }
+  },
+  {
+    "name": "Custom Background",
+    "description": "You have a unique history that doesn't fit any standard mold. Through your life experiences, you've developed a distinctive set of skills and abilities.",
+    "skill_proficiencies": ["Two of your choice"],
+    "tool_proficiencies": ["Two of your choice (can be languages or tools)"],
+    "languages": [],
+    "equipment": ["The equipment package from any background"],
+    "feature": {
+      "name": "Choose a Feature",
+      "description": "Choose a feature from any background that best represents your unique history and experiences."
+    }
+  },
+  {
+    "name": "Faction Agent",
+    "description": "You serve as an agent for one of the powerful factions that shape the political landscape of the realms, working behind the scenes to advance your organization's goals.",
+    "skill_proficiencies": ["Insight", "One Intelligence, Wisdom, or Charisma skill of your choice"],
+    "tool_proficiencies": [],
+    "languages": ["Two of your choice"],
+    "equipment": [
+      "Badge or emblem of your faction",
+      "A copy of a seminal faction text (or code-book for a covert faction)",
+      "A set of common clothes",
+      "A pouch containing 15 gp"
+    ],
+    "feature": {
+      "name": "Safe Haven",
+      "description": "As a faction agent, you have access to a secret network of supporters and operatives who can provide assistance on your adventures. You know a set of secret signs and passwords you can use to identify such operatives, who can provide you with access to a hidden safe house, free room and board, or assistance in finding information."
+    }
+  },
+  {
+    "name": "Far Traveler",
+    "description": "You have journeyed from a distant and exotic land, bringing with you the customs, traditions, and perspectives of a culture far removed from the familiar.",
+    "skill_proficiencies": ["Insight", "Perception"],
+    "tool_proficiencies": ["Any one musical instrument or gaming set"],
+    "languages": ["One of your choice"],
+    "equipment": [
+      "One set of traveler's clothes",
+      "Any one musical instrument or gaming set you are proficient with",
+      "Poorly wrought maps from your homeland that depict where you are",
+      "A small piece of jewelry worth 10 gp in the style of your homeland's craftsmanship",
+      "A pouch containing 5 gp"
+    ],
+    "feature": {
+      "name": "All Eyes on You",
+      "description": "Your accent, mannerisms, figures of speech, and perhaps even your appearance all mark you as foreign. You can parley this attention into access to people and places you might not otherwise have, for you and your traveling companions. Noble lords, scholars, and merchant princes might be interested in hearing about your distant homeland and people."
+    }
+  },
+  {
+    "name": "Feylost",
+    "description": "You spent time in the Feywild, whether by accident or design, and the experience has marked you in subtle and magical ways.",
+    "skill_proficiencies": ["Deception", "Survival"],
+    "tool_proficiencies": ["One type of musical instrument"],
+    "languages": ["One of Elvish, Gnomish, Goblin, or Sylvan"],
+    "equipment": [
+      "A musical instrument",
+      "A set of traveler's clothes",
+      "Three Feywild trinkets",
+      "A pouch containing 8 gp"
+    ],
+    "feature": {
+      "name": "Feywild Connection",
+      "description": "Your mannerisms and knowledge of fey customs are recognized by natives of the Feywild, who see you as one of their own. Because of this, friendly Fey creatures are inclined to come to your aid if you are lost or need help in the Feywild."
+    }
+  },
+  {
+    "name": "Fisher",
+    "description": "You have spent your life working the waters, whether seas, rivers, or lakes, learning the ways of aquatic life and the patience required to harvest from the deep.",
+    "skill_proficiencies": ["History", "Survival"],
+    "tool_proficiencies": [],
+    "languages": ["One of your choice"],
+    "equipment": [
+      "Fishing tackle",
+      "A net",
+      "A favorite fishing lure or oiled leather wading boots",
+      "A set of traveler's clothes",
+      "A belt pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Harvest the Water",
+      "description": "You gain advantage on ability checks made using fishing tackle. If you have access to a body of water that sustains marine life, you can maintain a moderate lifestyle while working as a fisher, and you can catch enough food to feed yourself and up to ten other people each day."
+    }
+  },
+  {
+    "name": "Folk Hero",
+    "description": "You come from a humble social rank, but you are destined for so much more. Already the people of your home village regard you as their champion, and your destiny calls you to stand against the tyrants and monsters that threaten the common folk everywhere.",
+    "skill_proficiencies": ["Animal Handling", "Survival"],
+    "tool_proficiencies": ["One type of artisan's tools", "Vehicles (land)"],
+    "languages": [],
+    "equipment": [
+      "A set of artisan's tools",
+      "A shovel",
+      "An iron pot",
+      "A set of common clothes",
+      "A belt pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Rustic Hospitality",
+      "description": "Since you come from the ranks of the common folk, you fit in among them with ease. You can find a place to hide, rest, or recuperate among other commoners, unless you have shown yourself to be a danger to them. They will shield you from the law or anyone else searching for you, though they will not risk their lives for you."
+    }
+  },
+  {
+    "name": "Gate Warden",
+    "description": "You have lived in a gate-town near a permanent portal to another plane, absorbing the essence radiating from the realm beyond and learning to navigate between worlds.",
+    "skill_proficiencies": ["Persuasion", "Survival"],
+    "tool_proficiencies": [],
+    "languages": ["Two of your choice (Abyssal, Celestial, or Infernal recommended)"],
+    "equipment": [
+      "A ring of keys to unknown locks",
+      "A blank book",
+      "A bottle of black ink",
+      "An ink pen or quill",
+      "A set of traveler's clothes",
+      "A pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Planar Infusion",
+      "description": "Living in a gate-town steeped you in planar energy. You gain the Scion of the Outer Planes feat. In addition, you know where to find free, modest lodging and food in the community you grew up in."
+    }
+  },
+  {
+    "name": "Giant Foundling",
+    "description": "You were raised among giants, learning their ways and absorbing their culture. Though you are small by their standards, you carry the strength of your adopted people in your heart.",
+    "skill_proficiencies": ["Intimidation", "Survival"],
+    "tool_proficiencies": [],
+    "languages": ["Giant", "One other language of your choice"],
+    "equipment": [
+      "A backpack",
+      "A set of traveler's clothes",
+      "A small stone or sprig that reminds you of home",
+      "A pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Strike of the Giants",
+      "description": "You gain the Strike of the Giants feat, reflecting the martial training and techniques you learned from your giant kin."
+    }
+  },
+  {
+    "name": "Grinner",
+    "description": "You are a member of the Golden Grin, a secret network of spies and rebels who use performance and deception to fight against tyranny.",
+    "skill_proficiencies": ["Deception", "Performance"],
+    "tool_proficiencies": ["One type of musical instrument", "Thieves' tools"],
+    "languages": [],
+    "equipment": [
+      "A set of fine clothes",
+      "A disguise kit",
+      "A musical instrument of your choice",
+      "A gold-plated ring depicting a smiling face",
+      "A pouch containing 15 gp"
+    ],
+    "feature": {
+      "name": "Ballad of the Grinning Fool",
+      "description": "Like every Grinner, you know how to find a hideout. In any city of 10,000 people or more, you can play the 'Ballad of the Grinning Fool' in a major tavern or inn. A member of the Golden Grin will find you and give shelter to you and any companions you vouch for."
+    }
+  },
+  {
+    "name": "Guild Artisan",
+    "description": "You are a member of an artisan's guild, skilled in a particular field and closely associated with other artisans. You are a well-established part of the mercantile world.",
+    "skill_proficiencies": ["Insight", "Persuasion"],
+    "tool_proficiencies": ["One type of artisan's tools"],
+    "languages": ["One of your choice"],
+    "equipment": [
+      "A set of artisan's tools",
+      "A letter of introduction from your guild",
+      "A set of traveler's clothes",
+      "A belt pouch containing 15 gp"
+    ],
+    "feature": {
+      "name": "Guild Membership",
+      "description": "As an established and respected member of a guild, you can rely on certain benefits that membership provides. Your fellow guild members will provide you with lodging and food if necessary, and pay for your funeral if needed. You must pay dues of 5 gp per month to the guild."
+    }
+  },
+  {
+    "name": "Haunted One",
+    "description": "You are haunted by something beyond comprehension—a terrifying event, a monstrous entity, or a dark secret that has left an indelible mark on your soul.",
+    "skill_proficiencies": ["Two from Arcana, Investigation, Religion, or Survival"],
+    "tool_proficiencies": [],
+    "languages": ["Two, one of which must be Abyssal, Celestial, Deep Speech, Draconic, Infernal, Primordial, Sylvan, or Undercommon"],
+    "equipment": [
+      "A monster hunter's pack",
+      "A set of common clothes",
+      "One horror trinket of special significance",
+      "1 sp"
+    ],
+    "feature": {
+      "name": "Heart of Darkness",
+      "description": "Those who look into your eyes can see that you have faced unimaginable horror and that you are no stranger to darkness. Though they might fear you, commoners will extend you every courtesy and do their utmost to help you, even taking up arms to fight alongside you should you face an enemy alone."
+    }
+  },
+  {
+    "name": "House Agent",
+    "description": "You serve as an agent for one of the great houses of Khorvaire, using your position to advance your house's interests while pursuing your own goals.",
+    "skill_proficiencies": ["Investigation", "Persuasion"],
+    "tool_proficiencies": ["One kind of artisan's tools"],
+    "languages": [],
+    "equipment": [
+      "Artisan's tools",
+      "Fine clothes",
+      "20 GP"
+    ],
+    "feature": {
+      "name": "Lucky",
+      "description": "You have the Lucky feat, allowing you to draw upon your house's fortune to influence events in your favor."
+    }
+  },
+  {
+    "name": "Inheritor",
+    "description": "You have inherited something of great value—not necessarily monetary, but significant nonetheless. This inheritance shapes your destiny and draws you into adventure.",
+    "skill_proficiencies": ["Survival", "One from Arcana, History, or Religion"],
+    "tool_proficiencies": ["Your choice of a gaming set or a musical instrument"],
+    "languages": ["One of your choice"],
+    "equipment": [
+      "Your inheritance",
+      "A set of traveler's clothes",
+      "The tool you chose for this background",
+      "A pouch containing 15 gp"
+    ],
+    "feature": {
+      "name": "Inheritance",
+      "description": "Choose or randomly determine your inheritance. Work with your DM to come up with details: Why is your inheritance so important, and what is its full story? The DM might use your inheritance as a story hook or determine that it has hidden properties that reveal themselves over time."
+    }
+  },
+  {
+    "name": "Inquisitive",
+    "description": "You have a keen eye for detail and a mind that never rests, always seeking answers to mysteries and uncovering hidden truths.",
+    "skill_proficiencies": ["Insight", "Investigation"],
+    "tool_proficiencies": ["Thieves' tools"],
+    "languages": [],
+    "equipment": [
+      "Thieves' tools",
+      "A bullseye lantern",
+      "A crowbar",
+      "10 flasks of oil",
+      "Traveler's clothes",
+      "10 GP"
+    ],
+    "feature": {
+      "name": "Alert",
+      "description": "You have the Alert feat, making you exceptionally perceptive and difficult to surprise. You gain a +5 bonus to initiative and can't be surprised while conscious."
+    }
+  },
+  {
+    "name": "Investigator",
+    "description": "You are trained in the art of investigation, skilled at uncovering secrets, solving mysteries, and bringing criminals to justice.",
+    "skill_proficiencies": ["Two from Insight, Investigation, or Perception"],
+    "tool_proficiencies": ["Disguise kit", "Thieves' tools"],
+    "languages": [],
+    "equipment": [
+      "A magnifying glass",
+      "Evidence from a past case",
+      "A set of common clothes",
+      "10 gp"
+    ],
+    "feature": {
+      "name": "Official Inquiry",
+      "description": "You're experienced at gaining access to people and places to get the information you need. Through a combination of fast-talking, determination, and official-looking documentation, you can gain access to a place or an individual related to a crime you're investigating."
+    }
+  },
+  {
+    "name": "Knight of Solamnia",
+    "description": "You are a member of the Knights of Solamnia, an order dedicated to honor, justice, and the protection of the innocent. Your training has prepared you for a life of chivalric adventure.",
+    "skill_proficiencies": ["Athletics", "Survival"],
+    "tool_proficiencies": [],
+    "languages": ["Two of your choice"],
+    "equipment": [
+      "An insignia of rank",
+      "A deck of cards",
+      "A set of common clothes",
+      "A pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Squire of Solamnia",
+      "description": "You gain the Squire of Solamnia feat. In addition, the Knights of Solamnia provide you free, modest lodging and food at any of their fortresses or encampments."
+    }
+  },
+  {
+    "name": "Knight of the Order",
+    "description": "You belong to a knightly order, whether religious, civic, or philosophical, and you have sworn to uphold its ideals and protect its interests.",
+    "skill_proficiencies": ["Persuasion", "One from Arcana, History, Nature, or Religion"],
+    "tool_proficiencies": ["Your choice of a gaming set or a musical instrument"],
+    "languages": ["One of your choice"],
+    "equipment": [
+      "One set of traveler's clothes",
+      "A signet, banner, or seal representing your place or rank in the order",
+      "A pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Knightly Regard",
+      "description": "You receive shelter and succor from members of your knightly order and those who are sympathetic to its aims. This help comes in the form of shelter and meals, and healing when appropriate, as well as occasionally risky assistance."
+    }
+  },
+  {
+    "name": "Lorwyn Expert",
+    "description": "You are a skilled navigator and explorer of the wilds, able to find your way through the most treacherous terrain and survive where others would perish.",
+    "skill_proficiencies": ["Athletics", "Nature"],
+    "tool_proficiencies": ["Cartographer's tools"],
+    "languages": [],
+    "equipment": [
+      "A quarterstaff",
+      "Cartographer's tools",
+      "A backpack",
+      "A basket",
+      "4 sheets of parchment",
+      "Rope",
+      "Traveler's clothes",
+      "29 GP"
+    ],
+    "feature": {
+      "name": "Child of the Sun",
+      "description": "You have an innate connection to the sun and its cycles. You can always tell the time of day accurately when you can see the sky, and you have advantage on saving throws against exhaustion from prolonged exposure to sunlight."
+    }
+  },
+  {
+    "name": "Mage of High Sorcery",
+    "description": "You are a member of the Mages of High Sorcery, an ancient and powerful organization dedicated to the study and regulation of magic.",
+    "skill_proficiencies": ["Arcana", "History"],
+    "tool_proficiencies": [],
+    "languages": ["Two of your choice"],
+    "equipment": [
+      "A bottle of colored ink",
+      "An ink pen",
+      "A set of common clothes",
+      "A pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Initiate of High Sorcery",
+      "description": "You gain the Initiate of High Sorcery feat. In addition, the Mages of High Sorcery provide you with free, modest lodging and food indefinitely at any occupied Tower of High Sorcery and for one night at the home of an organization member."
+    }
+  },
+  {
+    "name": "Marine",
+    "description": "You have served as a marine, a soldier trained to fight at sea as well as on land. Your experience has forged you into a resilient and dependable warrior.",
+    "skill_proficiencies": ["Athletics", "Survival"],
+    "tool_proficiencies": ["Vehicles (water)", "Vehicles (land)"],
+    "languages": [],
+    "equipment": [
+      "A dagger that belonged to a fallen comrade",
+      "A folded flag emblazoned with the symbol of your ship or company",
+      "A set of traveler's clothes",
+      "A belt pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Steady",
+      "description": "You can move twice the normal amount of time (up to 16 hours) each day before being subject to the effect of a forced march. Additionally, you can automatically find a safe route to land a boat on shore, provided such a route exists."
+    }
+  },
+  {
+    "name": "Mercenary Veteran",
+    "description": "You have fought for coin across many lands, serving in countless companies and learning the harsh realities of the mercenary life.",
+    "skill_proficiencies": ["Athletics", "Persuasion"],
+    "tool_proficiencies": ["One type of gaming set", "Vehicles (land)"],
+    "languages": [],
+    "equipment": [
+      "A uniform of your company (traveler's clothes in quality)",
+      "An insignia of your rank",
+      "A gaming set of your choice",
+      "A pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Mercenary Life",
+      "description": "You know the mercenary life as only someone who has experienced it can. You are able to identify mercenary companies by their emblems, and you know a little about any such company. You can find the taverns and festhalls where mercenaries abide in any area, as long as you speak the language."
+    }
+  },
+  {
+    "name": "Outlander",
+    "description": "You grew up in the wilds, far from civilization and the comforts of town and technology. You've witnessed the migration of herds larger than forests and survived weather more extreme than any city-dweller could comprehend.",
+    "skill_proficiencies": ["Athletics", "Survival"],
+    "tool_proficiencies": ["One type of musical instrument"],
+    "languages": ["One of your choice"],
+    "equipment": [
+      "A staff",
+      "A hunting trap",
+      "A trophy from an animal you killed",
+      "A set of traveler's clothes",
+      "A belt pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Wanderer",
+      "description": "You have an excellent memory for maps and geography, and you can always recall the general layout of terrain, settlements, and other features around you. In addition, you can find food and fresh water for yourself and up to five other people each day, provided that the land offers berries, small game, water, and so forth."
+    }
+  },
+  {
+    "name": "Planar Philosopher",
+    "description": "You have dedicated your life to understanding the fundamental nature of the multiverse, studying the planes and the philosophies that seek to explain existence.",
+    "skill_proficiencies": ["Arcana", "One skill associated with your faction"],
+    "tool_proficiencies": [],
+    "languages": ["Two of your choice"],
+    "equipment": [
+      "A portal key",
+      "A manifesto of your guiding philosophy",
+      "A set of common clothes in your faction's style",
+      "A pouch containing 10 gp worth of coins from different worlds and planes"
+    ],
+    "feature": {
+      "name": "Conviction",
+      "description": "You gain the Scion of the Outer Planes feat. In addition, members of your organization provide you free, modest lodging and food at any of their holdings or the homes of other faction members."
+    }
+  },
+  {
+    "name": "Rune Carver",
+    "description": "You are a master of ancient runes, able to carve symbols of power that can be used to enhance equipment, cast spells, or create magical effects.",
+    "skill_proficiencies": ["History", "Perception"],
+    "tool_proficiencies": ["One set of artisan's tools"],
+    "languages": ["Giant"],
+    "equipment": [
+      "A set of artisan's tools",
+      "A small knife",
+      "A whetstone",
+      "A set of common clothes",
+      "A pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Rune Shaper",
+      "description": "You gain the Rune Shaper feat, allowing you to carve temporary runes that can enhance your equipment or cast spells."
+    }
+  },
+  {
+    "name": "Shadowmoor Expert",
+    "description": "You have learned to navigate the treacherous Shadowmoor, a place of perpetual twilight where shadows hide dangers and secrets alike.",
+    "skill_proficiencies": ["Acrobatics", "Deception"],
+    "tool_proficiencies": ["Glassblower's tools"],
+    "languages": [],
+    "equipment": [
+      "A dagger",
+      "Glassblower's tools",
+      "A backpack",
+      "A hunting trap",
+      "A lamp",
+      "3 flasks of oil",
+      "Traveler's clothes",
+      "A waterskin",
+      "8 GP"
+    ],
+    "feature": {
+      "name": "Shadowmoor Hexer",
+      "description": "You have learned minor shadow magic that allows you to obscure your presence or create areas of dim light, even in bright conditions."
+    }
+  },
+  {
+    "name": "Shipwright",
+    "description": "You are a skilled builder and repairer of ships, knowing the secrets of naval architecture and the ways of the sea.",
+    "skill_proficiencies": ["History", "Perception"],
+    "tool_proficiencies": ["Carpenter's tools", "Vehicles (water)"],
+    "languages": [],
+    "equipment": [
+      "A set of well-loved carpenter's tools",
+      "A blank book",
+      "1 ounce of ink",
+      "An ink pen",
+      "A set of traveler's clothes",
+      "A leather pouch with 10 gp"
+    ],
+    "feature": {
+      "name": "I'll Patch It!",
+      "description": "Provided you have carpenter's tools and wood, you can perform repairs on a water vehicle. When you use this ability, you restore a number of hit points to the hull of a water vehicle equal to 5 × your proficiency modifier."
+    }
+  },
+  {
+    "name": "Smuggler",
+    "description": "You have made your living moving goods that others don't want moved—or don't want known—across borders and past authorities.",
+    "skill_proficiencies": ["Athletics", "Deception"],
+    "tool_proficiencies": ["Vehicles (water)"],
+    "languages": [],
+    "equipment": [
+      "A fancy leather vest or a pair of leather boots",
+      "A set of common clothes",
+      "A leather pouch with 15 gp"
+    ],
+    "feature": {
+      "name": "Down Low",
+      "description": "You are acquainted with a network of smugglers who are willing to help you out of tight situations. While in a particular town, city, or other similarly sized community, you and your companions can stay for free in safe houses, providing a poor lifestyle and allowing you to keep your presence a secret."
+    }
+  },
+  {
+    "name": "Urban Bounty Hunter",
+    "description": "You track down individuals for pay, using your knowledge of the urban environment and your connections to find those who don't want to be found.",
+    "skill_proficiencies": ["Two from Deception, Insight, Persuasion, or Stealth"],
+    "tool_proficiencies": ["Two from gaming set, musical instrument, or thieves' tools"],
+    "languages": [],
+    "equipment": [
+      "A set of clothes appropriate to your duties",
+      "A pouch containing 20 gp"
+    ],
+    "feature": {
+      "name": "Ear to the Ground",
+      "description": "You are in frequent contact with people in the segment of society that your chosen quarries move through. This connection comes in the form of a contact in any city you visit, a person who provides information about the people and places of the local area."
+    }
+  },
+  {
+    "name": "Urchin",
+    "description": "You grew up on the streets alone, orphaned, and poor. You had no one to watch over you or to provide for you, so you learned to provide for yourself.",
+    "skill_proficiencies": ["Sleight of Hand", "Stealth"],
+    "tool_proficiencies": ["Disguise kit", "Thieves' tools"],
+    "languages": [],
+    "equipment": [
+      "A small knife",
+      "A map of the city you grew up in",
+      "A pet mouse",
+      "A token to remember your parents by",
+      "A set of common clothes",
+      "A belt pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "City Secrets",
+      "description": "You know the secret patterns and flow to cities and can find passages through the urban sprawl that others would miss. When you are not in combat, you (and companions you lead) can travel between any two locations in the city twice as fast as your speed would normally allow."
+    }
+  },
+  {
+    "name": "Uthgardt Tribe Member",
+    "description": "You are a member of one of the Uthgardt tribes, barbarian peoples who follow ancient traditions and revere the spirits of nature and their totems.",
+    "skill_proficiencies": ["Athletics", "Survival"],
+    "tool_proficiencies": ["One type of musical instrument or artisan's tools"],
+    "languages": ["One of your choice"],
+    "equipment": [
+      "A hunting trap",
+      "A totemic token or set of tattoos marking your loyalty to Uthgar and your tribal totem",
+      "A set of traveler's clothes",
+      "A pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Uthgardt Heritage",
+      "description": "You have an excellent knowledge of not only your tribe's territory, but also the terrain and natural resources of the rest of the North. You can find twice as much food and water as you normally would when you forage there. Additionally, you can call upon the hospitality of your people and those allied with your tribe."
+    }
+  },
+  {
+    "name": "Waterdhavian Noble",
+    "description": "You were born into one of the noble houses of Waterdeep, the City of Splendors, and your name carries weight throughout the North.",
+    "skill_proficiencies": ["History", "Persuasion"],
+    "tool_proficiencies": ["One type of gaming set or musical instrument"],
+    "languages": ["One of your choice"],
+    "equipment": [
+      "A set of fine clothes",
+      "A signet ring or brooch",
+      "A scroll of pedigree",
+      "A skin of fine zzar or wine",
+      "A purse containing 20 gp"
+    ],
+    "feature": {
+      "name": "Kept in Style",
+      "description": "While you are in Waterdeep or elsewhere in the North, your house sees to your everyday needs. Your name and signet are sufficient to cover most of your expenses, allowing you to live a comfortable lifestyle without having to pay for it."
+    }
+  },
+  {
+    "name": "Wildspacer",
+    "description": "You have spent significant time in Wildspace, the vast expanse between worlds, facing its terrors and learning to survive in the void.",
+    "skill_proficiencies": ["Athletics", "Survival"],
+    "tool_proficiencies": ["Navigator's tools", "Vehicles (space)"],
+    "languages": [],
+    "equipment": [
+      "A belaying pin (club)",
+      "A set of traveler's clothes",
+      "A grappling hook",
+      "50 feet of hempen rope",
+      "A pouch containing 10 gp"
+    ],
+    "feature": {
+      "name": "Wildspace Adaptation",
+      "description": "You gain the Tough feat. In addition, you learned how to adapt to zero gravity. Being weightless doesn't give you disadvantage on any of your melee attack rolls."
+    }
+  },
+  {
+    "name": "Witchlight Hand",
+    "description": "You are or were a member of the Witchlight Carnival, a magical traveling show that brings wonder and joy to all who visit.",
+    "skill_proficiencies": ["Performance", "Sleight of Hand"],
+    "tool_proficiencies": ["Disguise kit or one type of musical instrument"],
+    "languages": ["One of your choice"],
+    "equipment": [
+      "A disguise kit or a musical instrument",
+      "A deck of cards",
+      "A carnival uniform or costume",
+      "One Feywild trinket",
+      "A pouch containing 8 gp"
+    ],
+    "feature": {
+      "name": "Carnival Fixture",
+      "description": "The Witchlight Carnival provides you with free, modest lodging and food. In addition, you may wander about the carnival and partake of its many wonders at no cost to you, provided you don't disrupt its shows or cause any other trouble."
+    }
+  }
+]
