@@ -1,5 +1,311 @@
 [
   {
+    "name": "Acolyte",
+    "description": "You have spent your life in service to a temple, learning sacred rites and providing sacrifices to the god or gods you worship. Serving the gods and discovering their sacred works will be your life's calling.",
+    "skill_proficiencies": ["Insight", "Religion"],
+    "tool_proficiencies": ["Calligrapher's supplies"],
+    "languages": [],
+    "equipment": [
+      "Book (Prayers)",
+      "Calligrapher's supplies",
+      "Holy symbol",
+      "10 sheets of Parchment",
+      "Robe",
+      "8 GP"
+    ],
+    "feature": {
+      "name": "Magic Initiate (Cleric)",
+      "description": "You gain the Magic Initiate feat, choosing the Cleric spell list. This reflects your divine training and connection to the gods."
+    }
+  },
+  {
+    "name": "Artisan",
+    "description": "You are a skilled craftsperson, mastering a particular trade and creating works of function and beauty. Your hands shape raw materials into finished goods, and your eye for detail is unmatched.",
+    "skill_proficiencies": ["Investigation", "Persuasion"],
+    "tool_proficiencies": ["One type of artisan's tools"],
+    "languages": [],
+    "equipment": [
+      "One type of artisan's tools",
+      "2 Pouches",
+      "Traveler's clothes",
+      "32 GP"
+    ],
+    "feature": {
+      "name": "Crafter",
+      "description": "You gain the Crafter feat, allowing you to create items more efficiently and with greater skill than ordinary artisans."
+    }
+  },
+  {
+    "name": "Charlatan",
+    "description": "You have an ability to trick others into believing what benefits you most. As a charlatan, you fleece marks with clever scams and inventive cons, always staying one step ahead of the law.",
+    "skill_proficiencies": ["Deception", "Sleight of Hand"],
+    "tool_proficiencies": ["Forgery kit"],
+    "languages": [],
+    "equipment": [
+      "Forgery kit",
+      "Costume",
+      "Fine clothes",
+      "15 GP"
+    ],
+    "feature": {
+      "name": "Skilled",
+      "description": "You gain the Skilled feat, reflecting the diverse talents you've developed to support your various schemes and identities."
+    }
+  },
+  {
+    "name": "Criminal",
+    "description": "You have a history in the criminal underworld, whether as a thief, fence, or enforcer. You know the shadows and how to use them to your advantage.",
+    "skill_proficiencies": ["Sleight of Hand", "Stealth"],
+    "tool_proficiencies": ["Thieves' tools"],
+    "languages": [],
+    "equipment": [
+      "2 Daggers",
+      "Thieves' tools",
+      "Crowbar",
+      "2 Pouches",
+      "Traveler's clothes",
+      "16 GP"
+    ],
+    "feature": {
+      "name": "Alert",
+      "description": "You gain the Alert feat, making you exceptionally perceptive and difficult to surprise—a necessary trait for survival in your former profession."
+    }
+  },
+  {
+    "name": "Entertainer",
+    "description": "You thrive in front of audiences, using your performance skills to delight, inspire, and captivate. You know how to read a crowd and give them what they want.",
+    "skill_proficiencies": ["Acrobatics", "Performance"],
+    "tool_proficiencies": ["One type of musical instrument"],
+    "languages": [],
+    "equipment": [
+      "One type of musical instrument",
+      "2 Costumes",
+      "Mirror",
+      "Perfume",
+      "Traveler's clothes",
+      "11 GP"
+    ],
+    "feature": {
+      "name": "Musician",
+      "description": "You gain the Musician feat, enhancing your ability to inspire others and create memorable performances."
+    }
+  },
+  {
+    "name": "Farmer",
+    "description": "You have worked the land, tending crops and livestock through seasons of plenty and seasons of want. The rhythms of nature and the value of hard labor are ingrained in you.",
+    "skill_proficiencies": ["Animal Handling", "Nature"],
+    "tool_proficiencies": ["Carpenter's tools"],
+    "languages": [],
+    "equipment": [
+      "Sickle",
+      "Carpenter's tools",
+      "Healer's kit",
+      "Iron pot",
+      "Shovel",
+      "Traveler's clothes",
+      "30 GP"
+    ],
+    "feature": {
+      "name": "Tough",
+      "description": "You gain the Tough feat, representing the resilience and endurance developed through years of physical labor."
+    }
+  },
+  {
+    "name": "Guard",
+    "description": "You have served as a guardian, protecting people and property from threats. Your watchful eye and readiness for trouble make you a reliable defender.",
+    "skill_proficiencies": ["Athletics", "Perception"],
+    "tool_proficiencies": ["One type of gaming set"],
+    "languages": [],
+    "equipment": [
+      "Spear",
+      "Light crossbow",
+      "20 Bolts",
+      "One type of gaming set",
+      "Hooded lantern",
+      "Manacles",
+      "Quiver",
+      "Traveler's clothes",
+      "12 GP"
+    ],
+    "feature": {
+      "name": "Alert",
+      "description": "You gain the Alert feat, honing your vigilance and reaction time to better protect those under your watch."
+    }
+  },
+  {
+    "name": "Guide",
+    "description": "You know the wilds intimately, leading travelers through dangerous territories and helping them survive nature's perils. The paths of the wilderness are written in your memory.",
+    "skill_proficiencies": ["Stealth", "Survival"],
+    "tool_proficiencies": ["Cartographer's tools"],
+    "languages": [],
+    "equipment": [
+      "Shortbow",
+      "20 Arrows",
+      "Cartographer's tools",
+      "Bedroll",
+      "Quiver",
+      "Tent",
+      "Traveler's clothes",
+      "3 GP"
+    ],
+    "feature": {
+      "name": "Magic Initiate (Druid)",
+      "description": "You gain the Magic Initiate feat, choosing the Druid spell list, reflecting your deep connection to the natural world."
+    }
+  },
+  {
+    "name": "Hermit",
+    "description": "You lived in seclusion, either in a sheltered community or in total isolation, for a formative part of your life. In your time apart from the clamor of society, you found a quiet contemplation that others seldom experience.",
+    "skill_proficiencies": ["Medicine", "Religion"],
+    "tool_proficiencies": ["Herbalism kit"],
+    "languages": [],
+    "equipment": [
+      "Quarterstaff",
+      "Herbalism kit",
+      "Bedroll",
+      "Book (philosophy)",
+      "Lamp",
+      "3 flasks of Oil",
+      "Traveler's clothes",
+      "16 GP"
+    ],
+    "feature": {
+      "name": "Healer",
+      "description": "You gain the Healer feat, representing the medical knowledge you developed during your solitary existence."
+    }
+  },
+  {
+    "name": "Merchant",
+    "description": "You are a trader of goods, traveling between communities to buy low and sell high. You understand the value of items and the art of negotiation.",
+    "skill_proficiencies": ["Animal Handling", "Persuasion"],
+    "tool_proficiencies": ["Navigator's tools"],
+    "languages": [],
+    "equipment": [
+      "Navigator's tools",
+      "2 Pouches",
+      "Traveler's clothes",
+      "22 GP"
+    ],
+    "feature": {
+      "name": "Lucky",
+      "description": "You gain the Lucky feat, reflecting the fortunate breaks and keen instincts that have helped you succeed in business."
+    }
+  },
+  {
+    "name": "Noble",
+    "description": "You were born into privilege and status, part of the social elite. Your name opens doors that remain closed to others, and you carry yourself with the confidence of one who has never wanted for comfort.",
+    "skill_proficiencies": ["History", "Persuasion"],
+    "tool_proficiencies": ["One type of gaming set"],
+    "languages": [],
+    "equipment": [
+      "One type of gaming set",
+      "Fine clothes",
+      "Perfume",
+      "29 GP"
+    ],
+    "feature": {
+      "name": "Skilled",
+      "description": "You gain the Skilled feat, reflecting the extensive education and training that noble upbringing provides."
+    }
+  },
+  {
+    "name": "Sage",
+    "description": "You are a dedicated scholar, spending years poring over tomes and conducting research. Your quest for knowledge has led you to uncover secrets that others have long forgotten.",
+    "skill_proficiencies": ["Arcana", "History"],
+    "tool_proficiencies": ["Calligrapher's supplies"],
+    "languages": [],
+    "equipment": [
+      "Quarterstaff",
+      "Calligrapher's supplies",
+      "Book (history)",
+      "8 sheets of Parchment",
+      "Robe",
+      "8 GP"
+    ],
+    "feature": {
+      "name": "Magic Initiate (Wizard)",
+      "description": "You gain the Magic Initiate feat, choosing the Wizard spell list, reflecting your academic study of magical theory."
+    }
+  },
+  {
+    "name": "Sailor",
+    "description": "You have spent your life on the water, whether on ships that cross the oceans or vessels that ply coastal waters. The sea is in your blood, and you know its moods and dangers.",
+    "skill_proficiencies": ["Acrobatics", "Perception"],
+    "tool_proficiencies": ["Navigator's tools"],
+    "languages": [],
+    "equipment": [
+      "Dagger",
+      "Navigator's tools",
+      "Rope",
+      "Traveler's clothes",
+      "20 GP"
+    ],
+    "feature": {
+      "name": "Tavern Brawler",
+      "description": "You gain the Tavern Brawler feat, representing your experience in portside brawls and rough-and-tumble shipboard life."
+    }
+  },
+  {
+    "name": "Scribe",
+    "description": "You are a professional writer and record-keeper, skilled in the precise art of putting words to parchment. Your pen is your livelihood, and your attention to detail is impeccable.",
+    "skill_proficiencies": ["Investigation", "Perception"],
+    "tool_proficiencies": ["Calligrapher's supplies"],
+    "languages": [],
+    "equipment": [
+      "Calligrapher's supplies",
+      "Fine clothes",
+      "Lamp",
+      "3 flasks of Oil",
+      "12 sheets of Parchment",
+      "23 GP"
+    ],
+    "feature": {
+      "name": "Skilled",
+      "description": "You gain the Skilled feat, reflecting the diverse knowledge and abilities you've developed through your work with texts and records."
+    }
+  },
+  {
+    "name": "Soldier",
+    "description": "You have served in military campaigns, learning the discipline of formation fighting and the chaos of battle. War has forged you into a weapon.",
+    "skill_proficiencies": ["Athletics", "Intimidation"],
+    "tool_proficiencies": ["One type of gaming set"],
+    "languages": [],
+    "equipment": [
+      "Spear",
+      "Shortbow",
+      "20 Arrows",
+      "One type of gaming set",
+      "Healer's kit",
+      "Quiver",
+      "Traveler's clothes",
+      "14 GP"
+    ],
+    "feature": {
+      "name": "Savage Attacker",
+      "description": "You gain the Savage Attacker feat, representing the aggressive and decisive combat techniques honed on the battlefield."
+    }
+  },
+  {
+    "name": "Wayfarer",
+    "description": "You are a traveler of the roads and paths, never staying in one place for long. You've seen more of the world than most, and you've learned to rely on your wits and adaptability.",
+    "skill_proficiencies": ["Insight", "Stealth"],
+    "tool_proficiencies": ["Thieves' tools"],
+    "languages": [],
+    "equipment": [
+      "2 Daggers",
+      "Thieves' tools",
+      "One type of gaming set",
+      "Bedroll",
+      "2 Pouches",
+      "Traveler's clothes",
+      "16 GP"
+    ],
+    "feature": {
+      "name": "Lucky",
+      "description": "You gain the Lucky feat, reflecting the fortunate circumstances that have helped you survive your journeys and the instinct to seize opportunities."
+    }
+  },
+  {
     "name": "Aberrant Heir",
     "description": "You carry the mark of aberrant magic in your bloodline, a heritage that sets you apart from others and grants you strange powers.",
     "skill_proficiencies": ["History", "Intimidation"],
