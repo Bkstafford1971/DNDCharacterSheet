@@ -308,7 +308,10 @@
         </div>
       </div>
       <div style="margin-top:14px">
-        <div class="section-title">Languages</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div class="section-title" style="margin-bottom:0">Languages</div>
+          <button class="gold-btn small-btn" onclick="openAddLanguageModal()" style="font-size:10px;padding:2px 8px">+ Add</button>
+        </div>
         <div id="languages-list"><div class="muted">Select a race</div></div>
       </div>
       <div style="margin-top:14px">
@@ -745,6 +748,33 @@ const CLASSES = [
   {name:"Warlock",hd:"1d8",primary:["Charisma"],saves:["Wisdom","Charisma"],sc:"Charisma",scType:"pact",armor:["Light armor"],weapons:["Simple weapons"],features:[{l:1,n:"Otherworldly Patron"},{l:1,n:"Pact Magic"},{l:2,n:"Eldritch Invocations"},{l:3,n:"Pact Boon"},{l:4,n:"ASI"},{l:11,n:"Mystic Arcanum (6th)"},{l:13,n:"Mystic Arcanum (7th)"},{l:15,n:"Mystic Arcanum (8th)"},{l:17,n:"Mystic Arcanum (9th)"},{l:20,n:"Eldritch Master"}]},
   {name:"Wizard",hd:"1d6",primary:["Intelligence"],saves:["Intelligence","Wisdom"],sc:"Intelligence",armor:[],weapons:["Daggers","Darts","Slings","Quarterstaffs","Light crossbows"],features:[{l:1,n:"Spellcasting"},{l:1,n:"Arcane Recovery"},{l:2,n:"Arcane Tradition"},{l:4,n:"ASI"},{l:18,n:"Spell Mastery"},{l:20,n:"Signature Spells"}]},
 ];
+
+const LANGUAGES = {
+  standard: [
+    {name:"Common",      speakers:"Humans",           script:"Common"},
+    {name:"Dwarvish",    speakers:"Dwarves",           script:"Dwarvish"},
+    {name:"Elvish",      speakers:"Elves",             script:"Elvish"},
+    {name:"Giant",       speakers:"Ogres, Giants",     script:"Dwarvish"},
+    {name:"Gnomish",     speakers:"Gnomes",            script:"Dwarvish"},
+    {name:"Goblin",      speakers:"Goblinoids",        script:"Dwarvish"},
+    {name:"Halfling",    speakers:"Halflings",         script:"Common"},
+    {name:"Orc",         speakers:"Orcs",              script:"Dwarvish"},
+  ],
+  exotic: [
+    {name:"Abyssal",     speakers:"Demons",            script:"Infernal"},
+    {name:"Celestial",   speakers:"Celestials",        script:"Celestial"},
+    {name:"Draconic",    speakers:"Dragons, Dragonborn", script:"Draconic"},
+    {name:"Deep Speech", speakers:"Aboleths, Cloakers", script:null},
+    {name:"Infernal",    speakers:"Devils",            script:"Infernal"},
+    {name:"Primordial",  speakers:"Elementals",        script:"Dwarvish", dialects:["Aquan","Auran","Ignan","Terran"]},
+    {name:"Sylvan",      speakers:"Fey creatures",     script:"Elvish"},
+    {name:"Undercommon", speakers:"Underworld traders", script:"Elvish"},
+  ],
+  secret: [
+    {name:"Druidic",     speakers:"Druids",            script:"Druidic"},
+    {name:"Thieves' Cant", speakers:"Rogues",          script:null},
+  ],
+};
 
 const SUBCLASSES = {
   "Artificer":["Alchemist", "Armorer", "Artillerist", "Battle Smith"],
@@ -2592,6 +2622,7 @@ const state = {
   magicItems: [],        // [{...item data, attuned, notes}]
   featChoices: {},       // {featName: {ability:'CHA', chosen:['SpellName']}}
   featSpellUses: {},     // {'FeatName|SpellName': {max:1, used:0, rest:'long'}}
+  extraLanguages: [],    // user-added languages beyond racial defaults
 };
 
 // init skills
@@ -2916,8 +2947,114 @@ function onSubclassChange() {
 function updateLanguages() {
   const race = getRaceData();
   const container = document.getElementById('languages-list');
-  if (!race) { container.innerHTML = '<div class="muted">Select a race</div>'; return; }
-  container.innerHTML = race.languages.map(l=>`<div style="font-size:13px;color:#8a7560">• ${l}</div>`).join('');
+  if (!container) return;
+
+  // Build the combined list: racial (auto) + extra (user-added)
+  const racialLangs = race ? race.languages : [];
+  const extra = state.extraLanguages || [];
+
+  if (!racialLangs.length && !extra.length) {
+    container.innerHTML = '<div class="muted">Select a race or add a language</div>';
+    return;
+  }
+
+  // Helper: find language metadata
+  const allLangData = [...LANGUAGES.standard, ...LANGUAGES.exotic, ...LANGUAGES.secret];
+  const getLangMeta = name => allLangData.find(l => l.name === name) || null;
+
+  let html = '';
+
+  // Racial languages — auto, shown in muted style, non-removable
+  racialLangs.forEach(langName => {
+    const meta = getLangMeta(langName);
+    const isChoice = langName.toLowerCase().includes('choice') || langName.toLowerCase().includes('extra');
+    html += `<div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;border-bottom:1px solid #1a1520">
+      <div>
+        <span style="font-size:12px;color:${isChoice?'#c9a84c':'#b8a898'}">${isChoice?'⚙':'•'} ${langName}</span>
+        ${meta && !isChoice ? `<span style="font-size:10px;color:#5a4a40;margin-left:5px">${meta.script ? meta.script+' script' : 'No script'}</span>` : ''}
+      </div>
+      <span style="font-size:9px;color:#4a3a30;text-transform:uppercase;letter-spacing:.05em">Race</span>
+    </div>`;
+  });
+
+  // Extra / user-added languages
+  extra.forEach((langName, idx) => {
+    const meta = getLangMeta(langName);
+    const isSecret = LANGUAGES.secret.some(l => l.name === langName);
+    const labelCol = isSecret ? '#b06aee' : '#6ecc6e';
+    const dotCol   = isSecret ? '#b06aee' : '#6ecc6e';
+    html += `<div style="display:flex;align-items:center;justify-content:space-between;padding:3px 0;border-bottom:1px solid #1a1520">
+      <div>
+        <span style="font-size:12px;color:${dotCol}">◆ ${langName}</span>
+        ${meta ? `<span style="font-size:10px;color:#5a4a40;margin-left:5px">${meta.speakers}${meta.script?' · '+meta.script+' script':''}</span>` : ''}
+        ${meta && meta.dialects ? `<span style="font-size:10px;color:#8a6a40;margin-left:4px">(${meta.dialects.join(', ')})</span>` : ''}
+      </div>
+      <button onclick="removeExtraLanguage(${idx})" title="Remove language"
+              style="background:none;border:none;color:#5a3a3a;cursor:pointer;font-size:13px;line-height:1;padding:0 2px">✕</button>
+    </div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+function removeExtraLanguage(idx) {
+  state.extraLanguages.splice(idx, 1);
+  updateLanguages();
+  autoSave();
+}
+
+function openAddLanguageModal() {
+  const modal = document.getElementById('lang-modal');
+  if (!modal) return;
+
+  // Build all languages, grouped by category, excluding already-known ones
+  const racialLangs = (getRaceData() || {languages:[]}).languages;
+  const allKnown = new Set([...racialLangs, ...(state.extraLanguages||[])]);
+
+  const buildGroup = (label, langs) => {
+    const available = langs.filter(l => !allKnown.has(l.name));
+    if (!available.length) return '';
+    return `<optgroup label="${label}">${available.map(l =>
+      `<option value="${l.name}">${l.name}${l.dialects?' ('+l.dialects.join('/')+')':''}${l.speakers?' — '+l.speakers:''}${l.script?' · '+l.script+' script':''}</option>`
+    ).join('')}</optgroup>`;
+  };
+
+  const sel = document.getElementById('lang-modal-sel');
+  if (sel) {
+    sel.innerHTML = '<option value="">— Choose a language —</option>'
+      + buildGroup('Standard Languages', LANGUAGES.standard)
+      + buildGroup('Exotic Languages', LANGUAGES.exotic)
+      + buildGroup('Secret Languages', LANGUAGES.secret);
+  }
+
+  // Clear custom input
+  const customInp = document.getElementById('lang-custom-input');
+  if (customInp) customInp.value = '';
+
+  modal.style.display = 'flex';
+}
+
+function confirmAddLanguage() {
+  const sel = document.getElementById('lang-modal-sel');
+  const customInp = document.getElementById('lang-custom-input');
+  const name = (customInp && customInp.value.trim()) ? customInp.value.trim() : (sel ? sel.value : '');
+
+  if (!name) { showToast('⚠ Choose or type a language first', '#6b4a1a'); return; }
+
+  if (!state.extraLanguages) state.extraLanguages = [];
+  const allKnown = new Set([...((getRaceData()||{languages:[]}).languages), ...state.extraLanguages]);
+  if (allKnown.has(name)) { showToast('⚠ Already know ' + name, '#6b4a1a'); return; }
+
+  state.extraLanguages.push(name);
+  closeAddLanguageModal();
+  updateLanguages();
+  autoSave();
+  showToast('✓ ' + name + ' added to languages');
+}
+
+function closeAddLanguageModal() {
+  const m = document.getElementById('lang-modal');
+  if (m) m.style.display = 'none';
 }
 
 function updateDarkvision() {
@@ -4119,6 +4256,7 @@ function gatherSaveData() {
     },
     notes: document.getElementById('notes-textarea').value,
     otherProf: document.getElementById('other-prof').value,
+    extraLanguages: [...(state.extraLanguages||[])],
   };
 }
 
@@ -4171,6 +4309,7 @@ function applySaveData(d) {
   state.knownSpells=new Set(d.knownSpells||[]);
   state.selectedFeats=d.feats||[]; renderFeats();
   state.customResistances=d.customResistances||[]; updateResistances();
+  state.extraLanguages=d.extraLanguages||[]; updateLanguages();
   state.magicItems=d.magicItems||[]; renderMagicItems();
   state.featChoices=d.featChoices||{};
   state.featSpellUses=d.featSpellUses||{};
@@ -5089,6 +5228,53 @@ init();
     <button onclick="closeFeatSpellSetup()" style="position:absolute;top:12px;right:14px;
             background:none;border:none;color:#8a7560;font-size:22px;cursor:pointer;line-height:1">✕</button>
     <div id="feat-spell-setup-body"></div>
+  </div>
+</div>
+
+<!-- ── ADD LANGUAGE MODAL ── -->
+<div id="lang-modal" onclick="if(event.target===this)closeAddLanguageModal()"
+     style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:9999;
+            align-items:center;justify-content:center;padding:20px">
+  <div style="background:#1a1520;border:2px solid #4a3728;border-radius:10px;
+              max-width:480px;width:100%;padding:24px;position:relative">
+    <button onclick="closeAddLanguageModal()" style="position:absolute;top:10px;right:14px;
+            background:none;border:none;color:#8a7560;font-size:22px;cursor:pointer;line-height:1">✕</button>
+    <div class="cinzel" style="font-size:18px;color:#c9a84c;margin-bottom:4px">Add Language</div>
+    <div style="font-size:12px;color:#8a7560;margin-bottom:16px">Select from the list or type a custom language below.</div>
+
+    <label class="field-label" style="margin-bottom:6px;display:block">Choose from list:</label>
+    <select id="lang-modal-sel" class="field-input" style="margin-bottom:14px"
+            onchange="document.getElementById('lang-custom-input').value=''">
+      <option value="">— Choose a language —</option>
+    </select>
+
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <div style="flex:1;height:1px;background:#3a2a30"></div>
+      <span style="font-size:11px;color:#5a4a50">OR</span>
+      <div style="flex:1;height:1px;background:#3a2a30"></div>
+    </div>
+
+    <label class="field-label" style="margin-bottom:6px;display:block">Custom / homebrew language:</label>
+    <input id="lang-custom-input" class="field-input" placeholder="e.g. Thieves&#39; Cant, Sylvan dialect..."
+           style="margin-bottom:18px"
+           oninput="if(this.value.trim())document.getElementById('lang-modal-sel').value=''">
+
+    <!-- Language reference -->
+    <div style="background:#0e0c14;border-radius:6px;padding:10px;margin-bottom:16px;font-size:11px;color:#5a4a40">
+      <div style="color:#8a7560;margin-bottom:4px;font-size:10px;text-transform:uppercase;letter-spacing:.08em">Standard</div>
+      <div style="color:#b8a898;margin-bottom:6px">Common, Dwarvish, Elvish, Giant, Gnomish, Goblin, Halfling, Orc</div>
+      <div style="color:#8a7560;margin-bottom:4px;font-size:10px;text-transform:uppercase;letter-spacing:.08em">Exotic</div>
+      <div style="color:#b8a898;margin-bottom:6px">Abyssal, Celestial, Draconic, Deep Speech, Infernal, Primordial, Sylvan, Undercommon</div>
+      <div style="color:#8a7560;margin-bottom:4px;font-size:10px;text-transform:uppercase;letter-spacing:.08em">Secret</div>
+      <div style="color:#b06aee">Druidic, Thieves&#39; Cant</div>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button class="gold-btn" onclick="confirmAddLanguage()">+ Add Language</button>
+      <button onclick="closeAddLanguageModal()"
+              style="background:#1a1520;border:1px solid #4a3728;border-radius:6px;color:#8a7560;
+                     padding:8px 16px;cursor:pointer;font-size:13px;font-family:'Cinzel',serif">Cancel</button>
+    </div>
   </div>
 </div>
 </body>
