@@ -27,8 +27,8 @@
 
   /* Header */
   #header{background:linear-gradient(180deg,#0f0e17 0%,#1a0a0a 100%);border-bottom:2px solid #b8520a;padding:20px 24px 14px}
-  .header-title{font-size:54px;font-weight:normal;color:#e40712;letter-spacing:2px;line-height:1;font-family:'DnDC','Cinzel',Georgia,serif}
-  .header-sub{font-size:11px;color:#b8520a;letter-spacing:5px;margin-top:4px;font-family:'Cinzel',Georgia,serif;font-weight:600}
+  .header-title{font-size:42px;font-weight:normal;color:#e40712;letter-spacing:2px;line-height:1;font-family:'DnDC','Cinzel',Georgia,serif}
+  .header-sub{font-size:13px;color:#b8520a;letter-spacing:5px;margin-top:4px;font-family:'Cinzel',Georgia,serif;font-weight:600}
   .header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
   .identity-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr 1fr;gap:10px;margin-bottom:10px}
   .identity-grid2{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
@@ -775,7 +775,47 @@
 
 <!-- ====== BIOGRAPHY TAB ====== -->
 <div id="tab-biography" class="tab-pane">
-  <div class="grid-2">
+  <div style="display:grid;grid-template-columns:220px 1fr 1fr;gap:16px;align-items:start">
+
+    <!-- PORTRAIT COLUMN -->
+    <div>
+      <div class="card" style="text-align:center">
+        <div class="section-title" style="margin-bottom:10px">Character Portrait</div>
+
+        <!-- Portrait display / drop zone -->
+        <div id="portrait-zone"
+          onclick="document.getElementById('portrait-file-input').click()"
+          ondragover="event.preventDefault();this.style.borderColor='#c9a84c'"
+          ondragleave="this.style.borderColor=''"
+          ondrop="handlePortraitDrop(event)"
+          style="width:180px;height:220px;margin:0 auto 10px;border:2px dashed #4a3728;border-radius:8px;
+                 cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;
+                 background:#0e0c14;overflow:hidden;position:relative;transition:border-color .2s">
+          <img id="portrait-img" src="" alt=""
+            style="display:none;width:100%;height:100%;object-fit:cover;border-radius:6px">
+          <div id="portrait-placeholder" style="color:#4a3728;font-size:13px;line-height:1.8;pointer-events:none">
+            <div style="font-size:32px;margin-bottom:6px">🎨</div>
+            <div style="font-size:11px;color:#5a4a3a">Click to upload</div>
+            <div style="font-size:11px;color:#5a4a3a">Drag & drop</div>
+            <div style="font-size:11px;color:#5a4a3a">or Ctrl+V to paste</div>
+          </div>
+          <input type="file" id="portrait-file-input" accept="image/*"
+            style="display:none" onchange="handlePortraitFile(event)">
+        </div>
+
+        <!-- Buttons -->
+        <div id="portrait-btns" style="display:none;flex-direction:column;gap:6px">
+          <button onclick="document.getElementById('portrait-file-input').click()"
+            style="background:#1a1520;border:1px solid #4a3728;border-radius:6px;color:#c9a84c;
+                   font-size:11px;padding:4px 10px;cursor:pointer;width:100%">🖼 Change Image</button>
+          <button onclick="clearPortrait()"
+            style="background:none;border:1px solid #3a1a1a;border-radius:6px;color:#6a3a3a;
+                   font-size:11px;padding:4px 10px;cursor:pointer;width:100%">✕ Remove</button>
+        </div>
+        <div style="font-size:10px;color:#4a3728;margin-top:8px">Paste an image anywhere<br>on this tab with Ctrl+V</div>
+      </div>
+    </div>
+
     <div>
       <!-- Physical -->
       <div class="card" style="margin-bottom:16px">
@@ -5024,6 +5064,7 @@ function gatherSaveData() {
       });
       return rows;
     })(),
+    portraitImage: portraitData || null,
     biography: {
       age: document.getElementById('bio-age').value,
       gender: document.getElementById('bio-gender').value,
@@ -5114,6 +5155,8 @@ function applySaveData(d) {
     addItemToInventory(item.name||'', parseInt(item.qty)||1, parseFloat(item.wt)||0);
   });
   updateCarryWeight();
+  if(d.portraitImage) loadPortrait(d.portraitImage);
+  else clearPortrait();
   if(d.biography){
     const b=d.biography;
     ['age','gender','height','weight','hair','eyes','skin'].forEach(f=>{
@@ -5321,6 +5364,74 @@ function saveCustomItem() {
   renderMagicItems();
   autoSave();
 }
+
+// ============================================================
+// CHARACTER PORTRAIT
+// ============================================================
+let portraitData = null; // base64 data URL
+
+function handlePortraitFile(event) {
+  const file = event.target.files[0];
+  if (file && file.type.startsWith('image/')) {
+    loadPortraitFromFile(file);
+  }
+  event.target.value = ''; // reset so same file can be re-selected
+}
+
+function handlePortraitDrop(event) {
+  event.preventDefault();
+  document.getElementById('portrait-zone').style.borderColor = '';
+  const file = event.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    loadPortraitFromFile(file);
+  }
+}
+
+function loadPortraitFromFile(file) {
+  const reader = new FileReader();
+  reader.onload = e => setPortrait(e.target.result);
+  reader.readAsDataURL(file);
+}
+
+function setPortrait(dataUrl) {
+  portraitData = dataUrl;
+  const img = document.getElementById('portrait-img');
+  const placeholder = document.getElementById('portrait-placeholder');
+  const btns = document.getElementById('portrait-btns');
+  if (img) { img.src = dataUrl; img.style.display = 'block'; }
+  if (placeholder) placeholder.style.display = 'none';
+  if (btns) btns.style.display = 'flex';
+  autoSave();
+}
+
+function clearPortrait() {
+  portraitData = null;
+  const img = document.getElementById('portrait-img');
+  const placeholder = document.getElementById('portrait-placeholder');
+  const btns = document.getElementById('portrait-btns');
+  if (img) { img.src = ''; img.style.display = 'none'; }
+  if (placeholder) placeholder.style.display = 'flex';
+  if (btns) btns.style.display = 'none';
+  autoSave();
+}
+
+function loadPortrait(dataUrl) {
+  if (!dataUrl) return;
+  setPortrait(dataUrl);
+}
+
+// Global paste handler — works anywhere on the page
+document.addEventListener('paste', function(event) {
+  const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+  for (const item of items) {
+    if (item.type.startsWith('image/')) {
+      const file = item.getAsFile();
+      loadPortraitFromFile(file);
+      event.preventDefault();
+      break;
+    }
+  }
+});
 
 const RARITY_COLORS = {
   common:    {bg:'#2a2a2a', border:'#5a5a5a', text:'#d0d0d0', badge:'#7a7a7a', label:'Common'},
