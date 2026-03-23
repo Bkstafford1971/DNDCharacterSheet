@@ -495,7 +495,10 @@
   <!-- ── ROW 1: Weapons + Armor ── -->
   <div class="grid-2" style="margin-bottom:16px">
     <div class="card">
-      <div class="section-title">Weapons</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="section-title" style="margin-bottom:0">Weapons</div>
+        <button class="gold-btn" style="padding:4px 12px;font-size:11px" onclick="openCustomWeaponModal()">+ Custom</button>
+      </div>
       <div style="display:grid;grid-template-columns:1fr 70px auto;gap:8px;margin-bottom:10px">
         <select class="field-input" id="weapon-add-sel">
           <option value="">Select weapon to add...</option>
@@ -507,7 +510,10 @@
     </div>
 
     <div class="card">
-      <div class="section-title">Armor &amp; Shields</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div class="section-title" style="margin-bottom:0">Armor &amp; Shields</div>
+        <button class="gold-btn" style="padding:4px 12px;font-size:11px" onclick="openCustomArmorModal()">+ Custom</button>
+      </div>
       <div style="margin-bottom:10px">
         <label class="field-label">Worn Armor</label>
         <select class="field-input" id="armor-sel" onchange="updateArmorInfo()">
@@ -515,6 +521,7 @@
         </select>
       </div>
       <div id="armor-info"></div>
+      <div id="custom-armor-list"></div>
     </div>
   </div>
 
@@ -3099,6 +3106,7 @@ const state = {
   skills: {},  // {name: {prof:false,exp:false}}
   inspiration: false,
   equippedWeapons: [],
+  customArmors: [],       // [{name, ac, cat, stealthDisadv, strReq}]
   selectedFeats: [],
   knownSpells: new Set(),
   spellSlots: {},  // {1:{max,used}, ...}
@@ -4569,6 +4577,151 @@ function removeWeapon(idx) {
   updateEquippedWeapons();
 }
 
+// ── Custom Weapon Modal ──────────────────────────────────────────────────────
+function openCustomWeaponModal() {
+  // Reset fields
+  document.getElementById('cw-name').value = '';
+  document.getElementById('cw-type').value = 'melee';
+  document.getElementById('cw-range').value = '';
+  document.getElementById('cw-tohit').value = '';
+  document.getElementById('cw-damage').value = '';
+  document.getElementById('cw-dmgtype').value = 'piercing';
+  toggleCwRange();
+  document.getElementById('custom-weapon-modal').style.display = 'flex';
+  setTimeout(() => document.getElementById('cw-name').focus(), 50);
+}
+
+function closeCustomWeaponModal() {
+  document.getElementById('custom-weapon-modal').style.display = 'none';
+}
+
+function toggleCwRange() {
+  const isRanged = document.getElementById('cw-type').value === 'ranged';
+  const wrap = document.getElementById('cw-range-wrap');
+  const rangeInput = document.getElementById('cw-range');
+  wrap.style.opacity = isRanged ? '1' : '0.4';
+  rangeInput.disabled = !isRanged;
+  if (!isRanged) rangeInput.value = '';
+}
+
+function confirmAddCustomWeapon() {
+  const name = document.getElementById('cw-name').value.trim();
+  if (!name) {
+    document.getElementById('cw-name').focus();
+    document.getElementById('cw-name').style.borderColor = '#c0392b';
+    return;
+  }
+  document.getElementById('cw-name').style.borderColor = '';
+
+  const type = document.getElementById('cw-type').value;
+  const rangeVal = document.getElementById('cw-range').value.trim();
+  const toHit = parseInt(document.getElementById('cw-tohit').value) || 0;
+  const damage = document.getElementById('cw-damage').value.trim() || '—';
+  const damageType = document.getElementById('cw-dmgtype').value;
+  const weaponRange = type === 'ranged' ? (rangeVal || 'Ranged') : 'melee';
+
+  state.equippedWeapons.push({
+    isCustom: true,
+    name,
+    weaponRange,
+    toHit,
+    damage,
+    damageType
+  });
+
+  updateEquippedWeapons();
+  closeCustomWeaponModal();
+}
+
+// ── Custom Armor Modal ───────────────────────────────────────────────────────
+function openCustomArmorModal() {
+  document.getElementById('ca-name').value = '';
+  document.getElementById('ca-ac').value = '';
+  document.getElementById('ca-cat').value = 'Light';
+  document.getElementById('ca-stealth').checked = false;
+  document.getElementById('ca-strreq').value = '';
+  document.getElementById('custom-armor-modal').style.display = 'flex';
+  setTimeout(() => document.getElementById('ca-name').focus(), 50);
+}
+
+function closeCustomArmorModal() {
+  document.getElementById('custom-armor-modal').style.display = 'none';
+}
+
+function confirmAddCustomArmor() {
+  const name = document.getElementById('ca-name').value.trim();
+  const ac = parseInt(document.getElementById('ca-ac').value);
+  if (!name) {
+    document.getElementById('ca-name').style.borderColor = '#c0392b';
+    document.getElementById('ca-name').focus();
+    return;
+  }
+  if (!ac || ac < 1) {
+    document.getElementById('ca-ac').style.borderColor = '#c0392b';
+    document.getElementById('ca-ac').focus();
+    return;
+  }
+  document.getElementById('ca-name').style.borderColor = '';
+  document.getElementById('ca-ac').style.borderColor = '';
+
+  const cat = document.getElementById('ca-cat').value;
+  const stealthDisadv = document.getElementById('ca-stealth').checked;
+  const strReq = document.getElementById('ca-strreq').value.trim();
+
+  // Avoid duplicates
+  if ((state.customArmors||[]).find(a=>a.name===name)) {
+    alert('An armor with that name already exists.');
+    return;
+  }
+
+  if (!state.customArmors) state.customArmors = [];
+  state.customArmors.push({ name, ac, cat, stealthDisadv, strReq });
+
+  // Add to armor-sel dropdown
+  const sel = document.getElementById('armor-sel');
+  const opt = document.createElement('option');
+  opt.value = name;
+  opt.textContent = `${name} (AC ${ac}${cat==='Light'?'+DEX':cat==='Medium'?'+DEX≤2':''}) [Custom]`;
+  opt.dataset.custom = 'true';
+  sel.appendChild(opt);
+
+  renderCustomArmorList();
+  closeCustomArmorModal();
+}
+
+function removeCustomArmor(name) {
+  if (!state.customArmors) return;
+  state.customArmors = state.customArmors.filter(a => a.name !== name);
+  // Remove from dropdown, reset selection if currently chosen
+  const sel = document.getElementById('armor-sel');
+  const opt = [...sel.options].find(o => o.value === name && o.dataset.custom);
+  if (opt) {
+    if (sel.value === name) { sel.value = ''; updateArmorInfo(); }
+    sel.removeChild(opt);
+  }
+  renderCustomArmorList();
+}
+
+function renderCustomArmorList() {
+  const el = document.getElementById('custom-armor-list');
+  if (!el) return;
+  const list = state.customArmors || [];
+  if (!list.length) { el.innerHTML = ''; return; }
+  el.innerHTML = '<div style="margin-top:10px">' +
+    list.map(a => {
+      const dexNote = a.cat==='Light'?' + DEX':a.cat==='Medium'?' + DEX (max 2)':'';
+      return `<div style="background:#1a1625;border:1px solid #2a1f40;border-radius:6px;padding:7px 10px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <span class="cinzel" style="font-size:12px;color:#c9a84c">${a.name}</span>
+          <span style="font-size:11px;color:#8a7560;margin-left:8px">AC ${a.ac}${dexNote} · ${a.cat}</span>
+          ${a.stealthDisadv?'<span style="font-size:10px;color:#ff6b6b;margin-left:6px">⚠ Stealth</span>':''}
+          ${a.strReq?`<span style="font-size:10px;color:#ff8c00;margin-left:6px">${a.strReq}</span>`:''}
+        </div>
+        <button class="danger-btn" style="font-size:11px;padding:2px 8px" onclick="removeCustomArmor('${a.name.replace(/'/g,"\\'")}')">✕</button>
+      </div>`;
+    }).join('') + '</div>';
+}
+
 function getWeaponToHit(w) {
   const pb = getProfBonus(getLevel());
   const wd = WEAPONS.find(x=>x.n===w.name);
@@ -4627,6 +4780,17 @@ function updateEquippedWeapons() {
 
   const coreHtml = state.equippedWeapons.map((w,i) => {
     if (w.isBreathWeapon) return breathWeaponCardHtml(w, true);
+    if (w.isCustom) {
+      const sign = w.toHit >= 0 ? '+' : '';
+      return `
+      <div style="background:#1a1625;border:1px solid #2a2030;border-radius:6px;padding:8px 12px;margin-bottom:6px;display:grid;grid-template-columns:2fr 1fr 1fr 2fr auto;gap:8px;align-items:center">
+        <span class="cinzel" style="font-size:13px">${w.name}</span>
+        <span style="font-size:12px;color:#8a7560">${w.weaponRange}</span>
+        <span class="cinzel" style="color:#c9a84c">${sign}${w.toHit}</span>
+        <span style="font-size:12px">${w.damage} ${w.damageType}</span>
+        <button class="danger-btn" onclick="removeWeapon(${i})">✕</button>
+      </div>`;
+    }
     const wd=WEAPONS.find(x=>x.n===w.name);
     const toHit=getWeaponToHit(w);
     const isFinesse=wd&&wd.props.includes('Finesse');
@@ -4649,6 +4813,22 @@ function updateEquippedWeapons() {
 
   eqList.innerHTML = state.equippedWeapons.map((w,i) => {
     if (w.isBreathWeapon) return breathWeaponCardHtml(w, false);
+    if (w.isCustom) {
+      const sign = w.toHit >= 0 ? '+' : '';
+      return `
+      <div class="weapon-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="cinzel" style="font-size:14px;color:#c9a84c">${w.name}</span>
+          <button class="danger-btn" onclick="removeWeapon(${i})">Remove</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:6px;font-size:12px;color:#8a7560">
+          <div><span style="color:#e8dcc8">Damage:</span> ${w.damage} ${w.damageType}</div>
+          <div><span style="color:#e8dcc8">Range:</span> ${w.weaponRange}</div>
+          <div><span style="color:#e8dcc8">To Hit:</span> <span style="color:#c9a84c">${sign}${w.toHit}</span></div>
+        </div>
+        <div style="font-size:11px;color:#8a7560;margin-top:4px">Custom weapon</div>
+      </div>`;
+    }
     const wd=WEAPONS.find(x=>x.n===w.name);
     const toHit=getWeaponToHit(w);
     return `
@@ -4673,6 +4853,7 @@ function updateEquippedWeapons() {
 function calcAC() {
   const armorName = document.getElementById('armor-sel').value;
   const armor = ARMORS.find(a => a.n === armorName);
+  const customArmor = !armor ? (state.customArmors||[]).find(a => a.name === armorName) : null;
   const dexMod = getMod(state.abilities.dex);
   const conMod = getMod(state.abilities.con);
   const wisMod = getMod(state.abilities.wis);
@@ -4685,16 +4866,18 @@ function calcAC() {
   let hasShield = false;
   let shieldBonus = 0;
 
-  // Check if shield is equipped (separate from body armor)
-  const shieldArmor = ARMORS.find(a => a.n === 'Shield');
-  // Shield is tracked as armor-sel; if shield is selected as primary armor, no body armor
-  // Actually shield comes from armor-sel only if that's what's chosen.
-  // We allow shield to stack — check if armor chosen IS the shield
   if (armor && armor.cat === 'Shield') {
     hasShield = true;
     shieldBonus = 2;
-    // No body armor — use unarmored base
     label = 'Unarmored + Shield';
+  } else if (customArmor) {
+    // Custom armor: flat AC, dex based on category
+    base = customArmor.ac;
+    const cat = customArmor.cat;
+    if (cat === 'Light') dexBonus = dexMod;
+    else if (cat === 'Medium') dexBonus = Math.min(dexMod, 2);
+    else dexBonus = 0; // Heavy or Shield
+    label = customArmor.name;
   } else if (armor) {
     // Parse base AC from armor string: "11 + DEX", "13 + DEX (max 2)", "14"
     const acStr = armor.ac;
@@ -4712,12 +4895,10 @@ function calcAC() {
   } else {
     // No armor — check class Unarmored Defense
     if (clsName === 'Barbarian') {
-      // 10 + DEX + CON
       base = 10 + dexMod + conMod;
       dexBonus = 0;
       label = 'Unarmored Defense (Barb)';
     } else if (clsName === 'Monk') {
-      // 10 + DEX + WIS
       base = 10 + dexMod + wisMod;
       dexBonus = 0;
       label = 'Unarmored Defense (Monk)';
@@ -4762,14 +4943,25 @@ function updateArmorInfo() {
   const el = document.getElementById('armor-info');
   if (!name) { el.innerHTML=''; updateACDisplay(); return; }
   const armor = ARMORS.find(a=>a.n===name);
-  if (!armor) return;
-  el.innerHTML = `
-    <div style="background:#1a1625;border-radius:6px;padding:8px 12px;font-size:13px">
-      <div class="cinzel" style="color:#c9a84c">${armor.n}</div>
-      <div style="color:#8a7560;margin-top:4px">AC: ${armor.ac} | Weight: ${armor.w}</div>
-      ${armor.sd?'<div style="color:#ff6b6b;font-size:11px;margin-top:3px">⚠ Stealth Disadvantage</div>':''}
-      ${armor.sr?`<div style="color:#ff8c00;font-size:11px;margin-top:2px">Requires ${armor.sr}</div>`:''}
-    </div>`;
+  const custom = !armor ? (state.customArmors||[]).find(a=>a.name===name) : null;
+  if (armor) {
+    el.innerHTML = `
+      <div style="background:#1a1625;border-radius:6px;padding:8px 12px;font-size:13px">
+        <div class="cinzel" style="color:#c9a84c">${armor.n}</div>
+        <div style="color:#8a7560;margin-top:4px">AC: ${armor.ac} | Weight: ${armor.w}</div>
+        ${armor.sd?'<div style="color:#ff6b6b;font-size:11px;margin-top:3px">⚠ Stealth Disadvantage</div>':''}
+        ${armor.sr?`<div style="color:#ff8c00;font-size:11px;margin-top:2px">Requires ${armor.sr}</div>`:''}
+      </div>`;
+  } else if (custom) {
+    const dexNote = custom.cat==='Light'?' + DEX':custom.cat==='Medium'?' + DEX (max 2)':'';
+    el.innerHTML = `
+      <div style="background:#1a1625;border:1px solid #2a1f40;border-radius:6px;padding:8px 12px;font-size:13px">
+        <div class="cinzel" style="color:#c9a84c">${custom.name} <span style="font-size:10px;color:#8a7560">(Custom)</span></div>
+        <div style="color:#8a7560;margin-top:4px">Base AC: ${custom.ac}${dexNote} | ${custom.cat} Armor</div>
+        ${custom.stealthDisadv?'<div style="color:#ff6b6b;font-size:11px;margin-top:3px">⚠ Stealth Disadvantage</div>':''}
+        ${custom.strReq?`<div style="color:#ff8c00;font-size:11px;margin-top:2px">Requires ${custom.strReq}</div>`:''}
+      </div>`;
+  }
   updateACDisplay();
 }
 
@@ -5040,6 +5232,7 @@ function gatherSaveData() {
     },
     equippedWeapons: state.equippedWeapons.filter(w=>!w.isBreathWeapon),
     armor: document.getElementById('armor-sel').value,
+    customArmors: state.customArmors || [],
     spellSlots: JSON.parse(JSON.stringify(state.spellSlots)),
     warlockSlotsUsed: state.warlockSlotsUsed,
     knownSpells: [...state.knownSpells],
@@ -5130,6 +5323,20 @@ function applySaveData(d) {
   },150);
   state.equippedWeapons = (d.equippedWeapons||[]).filter(w=>!w.isBreathWeapon);
   updateBreathWeapon();
+  // Restore custom armors first so they're available in the dropdown
+  state.customArmors = d.customArmors || [];
+  state.customArmors.forEach(a => {
+    const sel = document.getElementById('armor-sel');
+    if (![...sel.options].find(o=>o.value===a.name)) {
+      const opt = document.createElement('option');
+      opt.value = a.name;
+      const dexNote = a.cat==='Light'?'+DEX':a.cat==='Medium'?'+DEX≤2':'';
+      opt.textContent = `${a.name} (AC ${a.ac}${dexNote}) [Custom]`;
+      opt.dataset.custom = 'true';
+      sel.appendChild(opt);
+    }
+  });
+  renderCustomArmorList();
   document.getElementById('armor-sel').value = d.armor||'';
   updateArmorInfo();
   if(d.spellSlots) Object.keys(d.spellSlots).forEach(k=>{ state.spellSlots[k]=d.spellSlots[k]; });
@@ -5711,7 +5918,7 @@ function closeMagicModal() {
   if (m) m.style.display = 'none';
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeMagicModal(); closeSpellModal(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeMagicModal(); closeSpellModal(); closeCustomWeaponModal(); closeCustomArmorModal(); } });
 
 function autoSave() {
   try { localStorage.setItem('dnd_character', JSON.stringify(gatherSaveData())); } catch(e) {}
@@ -6476,6 +6683,132 @@ init();
     <div style="display:flex;gap:10px">
       <button class="gold-btn" onclick="confirmAddLanguage()">+ Add Language</button>
       <button onclick="closeAddLanguageModal()"
+              style="background:#1a1520;border:1px solid #4a3728;border-radius:6px;color:#8a7560;
+                     padding:8px 16px;cursor:pointer;font-size:13px;font-family:'Cinzel',serif">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- ── Custom Weapon Modal ── -->
+<div id="custom-weapon-modal" onclick="if(event.target===this)closeCustomWeaponModal()"
+     style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:9999;
+            align-items:center;justify-content:center;padding:20px">
+  <div style="background:#1a1520;border:2px solid #4a3728;border-radius:10px;
+              max-width:480px;width:100%;padding:24px;position:relative">
+    <button onclick="closeCustomWeaponModal()" style="position:absolute;top:10px;right:14px;
+            background:none;border:none;color:#8a7560;font-size:22px;cursor:pointer;line-height:1">✕</button>
+    <div class="cinzel" style="font-size:18px;color:#c9a84c;margin-bottom:4px">Add Custom Weapon</div>
+    <div style="font-size:12px;color:#8a7560;margin-bottom:20px">Enter your weapon's details below.</div>
+
+    <!-- Name -->
+    <label class="field-label" style="display:block;margin-bottom:4px">Weapon Name</label>
+    <input id="cw-name" class="field-input" placeholder="e.g. Elven Longbow, Cursed Blade..."
+           style="margin-bottom:14px">
+
+    <!-- Melee / Ranged + Range -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div>
+        <label class="field-label" style="display:block;margin-bottom:4px">Type</label>
+        <select id="cw-type" class="field-input" onchange="toggleCwRange()">
+          <option value="melee">Melee</option>
+          <option value="ranged">Ranged</option>
+        </select>
+      </div>
+      <div id="cw-range-wrap">
+        <label class="field-label" style="display:block;margin-bottom:4px">Range</label>
+        <input id="cw-range" class="field-input" placeholder="e.g. 80/320" style="color:#8a7560">
+      </div>
+    </div>
+
+    <!-- To Hit -->
+    <label class="field-label" style="display:block;margin-bottom:4px">To Hit Bonus</label>
+    <input id="cw-tohit" class="field-input" type="number" placeholder="e.g. 6"
+           style="margin-bottom:14px">
+
+    <!-- Damage + Damage Type -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+      <div>
+        <label class="field-label" style="display:block;margin-bottom:4px">Damage</label>
+        <input id="cw-damage" class="field-input" placeholder="e.g. 1d8+4">
+      </div>
+      <div>
+        <label class="field-label" style="display:block;margin-bottom:4px">Damage Type</label>
+        <select id="cw-dmgtype" class="field-input">
+          <option value="piercing">Piercing</option>
+          <option value="slashing">Slashing</option>
+          <option value="bludgeoning">Bludgeoning</option>
+          <option value="fire">Fire</option>
+          <option value="cold">Cold</option>
+          <option value="lightning">Lightning</option>
+          <option value="acid">Acid</option>
+          <option value="poison">Poison</option>
+          <option value="psychic">Psychic</option>
+          <option value="radiant">Radiant</option>
+          <option value="necrotic">Necrotic</option>
+          <option value="thunder">Thunder</option>
+          <option value="force">Force</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button class="gold-btn" onclick="confirmAddCustomWeapon()">+ Add Weapon</button>
+      <button onclick="closeCustomWeaponModal()"
+              style="background:#1a1520;border:1px solid #4a3728;border-radius:6px;color:#8a7560;
+                     padding:8px 16px;cursor:pointer;font-size:13px;font-family:'Cinzel',serif">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- ── Custom Armor Modal ── -->
+<div id="custom-armor-modal" onclick="if(event.target===this)closeCustomArmorModal()"
+     style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:9999;
+            align-items:center;justify-content:center;padding:20px">
+  <div style="background:#1a1520;border:2px solid #4a3728;border-radius:10px;
+              max-width:460px;width:100%;padding:24px;position:relative">
+    <button onclick="closeCustomArmorModal()" style="position:absolute;top:10px;right:14px;
+            background:none;border:none;color:#8a7560;font-size:22px;cursor:pointer;line-height:1">✕</button>
+    <div class="cinzel" style="font-size:18px;color:#c9a84c;margin-bottom:4px">Add Custom Armor</div>
+    <div style="font-size:12px;color:#8a7560;margin-bottom:20px">Define a homebrew or magic armor piece.</div>
+
+    <!-- Name -->
+    <label class="field-label" style="display:block;margin-bottom:4px">Armor Name</label>
+    <input id="ca-name" class="field-input" placeholder="e.g. Dragonscale Cuirass, Shadow Mail..."
+           style="margin-bottom:14px">
+
+    <!-- AC + Category -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div>
+        <label class="field-label" style="display:block;margin-bottom:4px">Base AC</label>
+        <input id="ca-ac" class="field-input" type="number" min="1" max="30"
+               placeholder="e.g. 15">
+        <div style="font-size:10px;color:#6a5a50;margin-top:3px">DEX added based on type →</div>
+      </div>
+      <div>
+        <label class="field-label" style="display:block;margin-bottom:4px">Armor Type</label>
+        <select id="ca-cat" class="field-input">
+          <option value="Light">Light (+ full DEX)</option>
+          <option value="Medium">Medium (+ DEX max 2)</option>
+          <option value="Heavy">Heavy (no DEX)</option>
+          <option value="Shield">Shield / Other (flat)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Stealth + Str req -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+      <div style="display:flex;align-items:center;gap:8px;padding-top:20px">
+        <input type="checkbox" id="ca-stealth"
+               style="width:16px;height:16px;accent-color:#c9a84c;cursor:pointer">
+        <label for="ca-stealth" class="field-label" style="cursor:pointer;margin:0">Stealth Disadvantage</label>
+      </div>
+      <div>
+        <label class="field-label" style="display:block;margin-bottom:4px">Str Requirement <span style="color:#5a4a40">(optional)</span></label>
+        <input id="ca-strreq" class="field-input" placeholder="e.g. Str 15">
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px">
+      <button class="gold-btn" onclick="confirmAddCustomArmor()">+ Add Armor</button>
+      <button onclick="closeCustomArmorModal()"
               style="background:#1a1520;border:1px solid #4a3728;border-radius:6px;color:#8a7560;
                      padding:8px 16px;cursor:pointer;font-size:13px;font-family:'Cinzel',serif">Cancel</button>
     </div>
