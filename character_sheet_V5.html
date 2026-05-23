@@ -83,6 +83,30 @@
   .slot-bubble.used{background:#3a0000;border-color:#3a0000;color:#b8520a}
   .slot-bubble:hover{border-color:#c9a84c}
 
+  /* Bonus Spells Section */
+  .bonus-spell-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 8px;
+    background: #1a1625;
+    border: 1px solid #4a2a6a;
+    border-radius: 6px;
+    margin-bottom: 6px;
+   }
+  .bonus-spell-name {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: #b06aee;
+  }
+  .bonus-spell-level {
+    font-size: 10px;
+    color: #8a7560;
+    background: #0e0c14;
+    padding: 2px 6px;
+    border-radius: 10px;
+  }	
+
   /* Buttons */
   .gold-btn{background:linear-gradient(135deg,#8b6914,#c9a84c);border:none;color:#0f0e17;padding:7px 16px;border-radius:4px;cursor:pointer;font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;font-weight:700}
   .gold-btn:hover{opacity:.9}
@@ -418,6 +442,18 @@
       <div id="spell-slot-grid" style="display:flex;flex-wrap:wrap;gap:16px"></div>
     </div>
 
+    <!-- Bonus Spells Section (Campaign Rewards) -->
+	<div id="bonus-spells-section" class="card" style="margin-bottom:16px; background:#1a0a2a; border-color:#6a3a9a">
+	  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+		<div class="section-title" style="margin-bottom:0; color:#b06aee">✨ Bonus Spells & Cantrips (Campaign Rewards)</div>
+		<button class="gold-btn small-btn" onclick="openAddBonusSpellModal()" style="background:#2a0a3a; border-color:#8a3a9a; color:#c080e0">+ Add Bonus Spell</button>
+	  </div>
+	  <div style="font-size:11px; color:#8a7560; margin-bottom:10px">
+		These spells are granted by campaign study, magic items, or special training — they don't count against your normal limits.
+	  </div>
+	  <div id="bonus-spells-list"></div>
+	  <div id="bonus-cantrips-list" style="margin-top:10px"></div>
+	</div>
     <!-- Spell search + list -->
     <div id="spell-selection-banner" style="display:none;margin-bottom:10px;padding:10px 14px;background:#1a1520;border:1px solid #3a5a9a;border-radius:6px;font-size:12px;color:#6a9aee">
       <strong style="font-family:'Cinzel',serif;color:#c9a84c">Spell Selection Mode</strong> —
@@ -3121,6 +3157,8 @@ const state = {
   featChoices: {},       // {featName: {ability:'CHA', chosen:['SpellName']}}
   featSpellUses: {},     // {'FeatName|SpellName': {max:1, used:0, rest:'long'}}
   extraLanguages: [],    // user-added languages beyond racial defaults
+  bonusSpells: [],      // <-- ADD THIS LINE
+  bonusCantrips: [],    // <-- ADD THIS LINE
 };
 
 // init skills
@@ -3165,6 +3203,212 @@ function getSpellcastingMod() {
   if (!eff) return 0;
   const scAb = eff.sc.toLowerCase().slice(0,3);
   return getMod(state.abilities[scAb]);
+}
+
+// ============================================================
+// BONUS SPELLS & CANTRIPS SYSTEM (Campaign Rewards)
+// ============================================================
+
+// State for bonus spells (persists with character)
+// Add this to your state object:
+// bonusSpells: [],  // Each: {name, level, source, notes}
+// bonusCantrips: [] // Each: {name, source, notes}
+
+// Initialize in state (find the state object and add these lines):
+// bonusSpells: [],
+// bonusCantrips: [],
+
+function renderBonusSpells() {
+  const container = document.getElementById('bonus-spells-list');
+  const cantripContainer = document.getElementById('bonus-cantrips-list');
+  if (!container) return;
+  
+  // Ensure state properties exist
+  if (!state.bonusSpells) state.bonusSpells = [];
+  if (!state.bonusCantrips) state.bonusCantrips = [];
+  
+  // Render leveled bonus spells
+  if (state.bonusSpells.length === 0) {
+    container.innerHTML = '<div class="muted" style="padding:8px; font-size:12px">No bonus spells added yet.</div>';
+  } else {
+    container.innerHTML = state.bonusSpells.map((spell, idx) => {
+      const spData = SPELL_DATA[spell.name];
+      const levelLabel = spData ? (spData.level === 0 ? 'Cantrip' : `${spData.level}st`) : (spell.level || '?');
+      const safeName = spell.name.replace(/'/g, "\\'");
+      return `
+        <div class="bonus-spell-item">
+          <div style="flex:1">
+            <span class="bonus-spell-name">✦ ${spell.name}</span>
+            <span class="bonus-spell-level" style="margin-left:8px">Level ${levelLabel}</span>
+            ${spell.source ? `<span style="font-size:10px; color:#5a4a68; margin-left:8px">(${spell.source})</span>` : ''}
+            ${spell.notes ? `<div style="font-size:10px; color:#6a5a7a; margin-top:2px">${spell.notes}</div>` : ''}
+          </div>
+          <button class="danger-btn" style="padding:2px 8px; font-size:10px" onclick="removeBonusSpell(${idx})">✕</button>
+        </div>
+      `;
+    }).join('');
+  }
+  
+  // Render bonus cantrips
+  if (state.bonusCantrips.length === 0) {
+    cantripContainer.innerHTML = '<div class="muted" style="padding:8px; font-size:12px">No bonus cantrips added yet.</div>';
+  } else {
+    cantripContainer.innerHTML = '<div class="field-label" style="margin-bottom:6px; margin-top:8px">Bonus Cantrips</div>' +
+      state.bonusCantrips.map((cantrip, idx) => {
+        const spData = SPELL_DATA[cantrip.name];
+        const safeName = cantrip.name.replace(/'/g, "\\'");
+        return `
+          <div class="bonus-spell-item">
+            <div style="flex:1">
+              <span class="bonus-spell-name">✦ ${cantrip.name}</span>
+              <span class="bonus-spell-level" style="margin-left:8px">Cantrip</span>
+              ${cantrip.source ? `<span style="font-size:10px; color:#5a4a68; margin-left:8px">(${cantrip.source})</span>` : ''}
+              ${cantrip.notes ? `<div style="font-size:10px; color:#6a5a7a; margin-top:2px">${cantrip.notes}</div>` : ''}
+            </div>
+            <button class="danger-btn" style="padding:2px 8px; font-size:10px" onclick="removeBonusCantrip(${idx})">✕</button>
+          </div>
+        `;
+      }).join('');
+  }
+}
+
+function openAddBonusSpellModal() {
+  const modal = document.getElementById('bonus-spell-modal');
+  if (!modal) return;
+  
+  // Clear and populate spell dropdown
+  const spellSel = document.getElementById('bonus-spell-select');
+  if (spellSel) {
+    spellSel.innerHTML = '<option value="">— Choose a spell —</option>';
+    // Add all spells from SPELL_DATA
+    const spellsByLevel = {};
+    Object.entries(SPELL_DATA).forEach(([name, data]) => {
+      const level = data.level;
+      if (!spellsByLevel[level]) spellsByLevel[level] = [];
+      spellsByLevel[level].push(name);
+    });
+    // Sort levels
+    Object.keys(spellsByLevel).sort((a,b)=>a-b).forEach(level => {
+      const group = document.createElement('optgroup');
+      group.label = level == 0 ? 'Cantrips' : `${level}st Level Spells`;
+      spellsByLevel[level].sort().forEach(spell => {
+        const opt = document.createElement('option');
+        opt.value = spell;
+        opt.textContent = spell;
+        group.appendChild(opt);
+      });
+      spellSel.appendChild(group);
+    });
+  }
+  
+  // Clear custom fields
+  document.getElementById('bonus-spell-custom').value = '';
+  document.getElementById('bonus-spell-level').value = '1';
+  document.getElementById('bonus-spell-source').value = '';
+  document.getElementById('bonus-spell-notes').value = '';
+  document.getElementById('bonus-spell-type').value = 'spell';
+  
+  toggleBonusSpellType();
+  modal.style.display = 'flex';
+}
+
+function toggleBonusSpellType() {
+  const type = document.getElementById('bonus-spell-type').value;
+  const spellSelect = document.getElementById('bonus-spell-select');
+  const customName = document.getElementById('bonus-spell-custom');
+  const levelRow = document.getElementById('bonus-spell-level-row');
+  
+  if (type === 'cantrip') {
+    if (spellSelect) spellSelect.style.display = 'block';
+    if (customName) customName.style.display = 'block';
+    if (levelRow) levelRow.style.display = 'none';
+  } else {
+    if (spellSelect) spellSelect.style.display = 'block';
+    if (customName) customName.style.display = 'block';
+    if (levelRow) levelRow.style.display = 'block';
+  }
+}
+
+function confirmAddBonusSpell() {
+  const type = document.getElementById('bonus-spell-type').value;
+  const spellSelect = document.getElementById('bonus-spell-select');
+  const customName = document.getElementById('bonus-spell-custom').value.trim();
+  const spellLevel = parseInt(document.getElementById('bonus-spell-level').value) || 1;
+  const source = document.getElementById('bonus-spell-source').value.trim();
+  const notes = document.getElementById('bonus-spell-notes').value.trim();
+  
+  let spellName = customName;
+  if (!spellName && spellSelect.value) {
+    spellName = spellSelect.value;
+  }
+  
+  if (!spellName) {
+    showToast('⚠ Please enter or select a spell name', '#6b4a1a');
+    return;
+  }
+  
+  if (type === 'cantrip') {
+    if (!state.bonusCantrips) state.bonusCantrips = [];
+    // Check for duplicate
+    if (state.bonusCantrips.find(c => c.name === spellName)) {
+      showToast('⚠ This cantrip is already in your bonus list', '#6b4a1a');
+      return;
+    }
+    state.bonusCantrips.push({
+      name: spellName,
+      source: source || 'Campaign Reward',
+      notes: notes
+    });
+    showToast(`✓ Bonus cantrip "${spellName}" added!`);
+  } else {
+    if (!state.bonusSpells) state.bonusSpells = [];
+    // Check for duplicate
+    if (state.bonusSpells.find(s => s.name === spellName)) {
+      showToast('⚠ This spell is already in your bonus list', '#6b4a1a');
+      return;
+    }
+    state.bonusSpells.push({
+      name: spellName,
+      level: spellLevel,
+      source: source || 'Campaign Reward',
+      notes: notes
+    });
+    showToast(`✓ Bonus ${spellLevel}st level spell "${spellName}" added!`);
+  }
+  
+  closeBonusSpellModal();
+  renderBonusSpells();
+  
+  // Also add to known spells if it's a real spell from the database
+  if (SPELL_DATA[spellName] && !state.knownSpells.has(spellName)) {
+    state.knownSpells.add(spellName);
+    renderSpellList();
+  }
+  
+  autoSave();
+}
+
+function removeBonusSpell(idx) {
+  if (!state.bonusSpells) return;
+  const removed = state.bonusSpells[idx];
+  state.bonusSpells.splice(idx, 1);
+  renderBonusSpells();
+  showToast(`Removed bonus spell: ${removed.name}`);
+  autoSave();
+}
+
+function removeBonusCantrip(idx) {
+  if (!state.bonusCantrips) return;
+  const removed = state.bonusCantrips[idx];
+  state.bonusCantrips.splice(idx, 1);
+  renderBonusSpells();
+  showToast(`Removed bonus cantrip: ${removed.name}`);
+  autoSave();
+}
+
+function closeBonusSpellModal() {
+  const modal = document.getElementById('bonus-spell-modal');
+  if (modal) modal.style.display = 'none';
 }
 
 // ============================================================
@@ -3274,14 +3518,54 @@ function renderSkillRows() {
   const pb = getProfBonus(getLevel());
   const container = document.getElementById('skill-rows');
   container.innerHTML = '';
+  
+  // Add header row with Misc Bonus column
+  const headerRow = document.createElement('div');
+  headerRow.style.display = 'grid';
+  headerRow.style.gridTemplateColumns = '20px 1fr 40px 50px';
+  headerRow.style.gap = '6px';
+  headerRow.style.padding = '4px 0';
+  headerRow.style.marginBottom = '6px';
+  headerRow.style.borderBottom = '1px solid #3a2a1a';
+  headerRow.style.fontSize = '10px';
+  headerRow.style.color = '#8a7560';
+  headerRow.innerHTML = `
+    <span></span>
+    <span>Skill (Ability)</span>
+    <span style="text-align:center">Bonus</span>
+    <span style="text-align:center">Misc</span>
+  `;
+  container.appendChild(headerRow);
+  
   SKILLS.forEach(sk => {
     const abKey = sk.ab.toLowerCase();
     const mod = getMod(state.abilities[abKey]);
     const s = state.skills[sk.n];
-    const total = mod + (s.exp ? pb*2 : s.prof ? pb : 0);
+    
+    // Initialize miscBonus if not exists
+    if (s.miscBonus === undefined) s.miscBonus = 0;
+    
+    const total = mod + (s.exp ? pb*2 : s.prof ? pb : 0) + (s.miscBonus || 0);
+    
     const row = document.createElement('div');
-    row.className = 'skill-row';
-    row.onclick = () => {
+    row.style.display = 'grid';
+    row.style.gridTemplateColumns = '20px 1fr 40px 50px';
+    row.style.gap = '6px';
+    row.style.alignItems = 'center';
+    row.style.padding = '3px 0';
+    row.style.cursor = 'pointer';
+    row.style.borderRadius = '4px';
+    
+    const toolBadge = sk.tool
+      ? `<span style="font-size:9px;color:#8a6a30;border:1px solid #4a3a18;border-radius:6px;padding:0 4px;margin-left:4px;vertical-align:middle">tool</span>`
+      : '';
+    
+    // Proficiency circle column
+    const profDiv = document.createElement('div');
+    profDiv.className = `prof-circle ${s.exp?'expertise':s.prof?'filled':''}`;
+    profDiv.style.cursor = 'pointer';
+    profDiv.onclick = (e) => {
+      e.stopPropagation();
       const cur = state.skills[sk.n];
       if (cur.exp) { cur.prof=false; cur.exp=false; }
       else if (cur.prof) { cur.exp=true; }
@@ -3289,13 +3573,57 @@ function renderSkillRows() {
       renderSkillRows();
       updatePassivePerception();
     };
-    const toolBadge = sk.tool
-      ? `<span style="font-size:9px;color:#8a6a30;border:1px solid #4a3a18;border-radius:6px;padding:0 4px;margin-left:4px;vertical-align:middle">tool</span>`
-      : '';
-    row.innerHTML = `
-      <span class="prof-circle ${s.exp?'expertise':s.prof?'filled':''}"></span>
-      <span class="skill-name" style="font-size:12px">${sk.n}${toolBadge} <span style="color:#8a7560;font-size:10px">(${sk.ab})</span></span>
-      <span class="skill-val ${s.prof||s.exp?'prof':''}">${total>=0?'+':''}${total}</span>`;
+    
+    // Skill name column
+    const nameDiv = document.createElement('div');
+    nameDiv.style.fontSize = '12px';
+    nameDiv.style.cursor = 'pointer';
+    nameDiv.onclick = (e) => {
+      e.stopPropagation();
+      const cur = state.skills[sk.n];
+      if (cur.exp) { cur.prof=false; cur.exp=false; }
+      else if (cur.prof) { cur.exp=true; }
+      else { cur.prof=true; cur.exp=false; }
+      renderSkillRows();
+      updatePassivePerception();
+    };
+    nameDiv.innerHTML = `${sk.n}${toolBadge} <span style="color:#8a7560;font-size:10px">(${sk.ab})</span>`;
+    
+    // Total bonus column
+    const bonusDiv = document.createElement('div');
+    bonusDiv.style.textAlign = 'center';
+    bonusDiv.style.fontFamily = "'Cinzel', serif";
+    bonusDiv.style.fontSize = '13px';
+    bonusDiv.className = s.prof||s.exp ? 'prof' : '';
+    bonusDiv.style.color = s.prof||s.exp ? '#c9a84c' : '#e8dcc8';
+    bonusDiv.textContent = `${total>=0?'+':''}${total}`;
+    
+    // Misc bonus input column
+    const miscInput = document.createElement('input');
+    miscInput.type = 'number';
+    miscInput.value = s.miscBonus || 0;
+    miscInput.style.width = '50px';
+    miscInput.style.background = '#1a1625';
+    miscInput.style.border = '1px solid #3a2a1a';
+    miscInput.style.borderRadius = '4px';
+    miscInput.style.color = '#c9a84c';
+    miscInput.style.textAlign = 'center';
+    miscInput.style.fontSize = '12px';
+    miscInput.style.padding = '2px 0';
+    miscInput.onclick = (e) => e.stopPropagation();
+    miscInput.onchange = (e) => {
+      const val = parseInt(e.target.value) || 0;
+      state.skills[sk.n].miscBonus = val;
+      renderSkillRows();
+      updatePassivePerception();
+      autoSave();
+    };
+    
+    row.appendChild(profDiv);
+    row.appendChild(nameDiv);
+    row.appendChild(bonusDiv);
+    row.appendChild(miscInput);
+    
     container.appendChild(row);
   });
   updatePassivePerception();
@@ -3304,10 +3632,10 @@ function renderSkillRows() {
 function updatePassivePerception() {
   const pb = getProfBonus(getLevel());
   const s = state.skills['Perception'];
+  const miscBonus = (s && s.miscBonus) || 0;
   const mod = getMod(state.abilities['wis']);
-  // Observant feat adds +5 to passive Perception
   const hasObservant = state.selectedFeats && state.selectedFeats.includes('Observant');
-  const pp = 10 + mod + (s.exp ? pb*2 : s.prof ? pb : 0) + (hasObservant ? 5 : 0);
+  const pp = 10 + mod + (s.exp ? pb*2 : s.prof ? pb : 0) + miscBonus + (hasObservant ? 5 : 0);
   const ppText = pp + (hasObservant ? ' (+5 Observant)' : '');
   const el1 = document.getElementById('passive-perc');
   const el2 = document.getElementById('passive-perc2');
@@ -6643,7 +6971,67 @@ init();
     <div id="feat-spell-setup-body"></div>
   </div>
 </div>
-
+<!-- Bonus Spell Modal -->
+<div id="bonus-spell-modal" onclick="if(event.target===this)closeBonusSpellModal()"
+     style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:10000;
+            align-items:center;justify-content:center;padding:20px">
+  <div style="background:#1a1520;border:2px solid #8a3a9a;border-radius:10px;
+              max-width:500px;width:100%;padding:28px;position:relative">
+    <button onclick="closeBonusSpellModal()" style="position:absolute;top:12px;right:14px;
+            background:none;border:none;color:#8a7560;font-size:22px;cursor:pointer;line-height:1">✕</button>
+    
+    <div class="cinzel" style="font-size:18px;color:#b06aee;margin-bottom:4px">✦ Add Bonus Spell/Cantrip</div>
+    <div style="font-size:12px;color:#8a7560;margin-bottom:20px">
+      For campaign rewards, special training, or magic items that grant extra spells beyond your class limits.
+    </div>
+    
+    <!-- Type Selection -->
+    <label class="field-label" style="display:block;margin-bottom:6px">Spell Type</label>
+    <select id="bonus-spell-type" class="field-input" onchange="toggleBonusSpellType()" style="margin-bottom:14px">
+      <option value="spell">Leveled Spell (1st-9th)</option>
+      <option value="cantrip">Cantrip</option>
+    </select>
+    
+    <!-- Spell Selection -->
+    <label class="field-label" style="display:block;margin-bottom:6px">Spell Name</label>
+    <select id="bonus-spell-select" class="field-input" style="margin-bottom:10px">
+      <option value="">— Choose a spell from list —</option>
+    </select>
+    <div style="text-align:center; font-size:11px; color:#5a4a50; margin:8px 0">— OR —</div>
+    <input id="bonus-spell-custom" class="field-input" placeholder="Enter custom/homebrew spell name" style="margin-bottom:14px">
+    
+    <!-- Spell Level (for leveled spells) -->
+    <div id="bonus-spell-level-row">
+      <label class="field-label" style="display:block;margin-bottom:6px">Spell Level</label>
+      <select id="bonus-spell-level" class="field-input" style="margin-bottom:14px">
+        <option value="1">1st Level</option>
+        <option value="2">2nd Level</option>
+        <option value="3">3rd Level</option>
+        <option value="4">4th Level</option>
+        <option value="5">5th Level</option>
+        <option value="6">6th Level</option>
+        <option value="7">7th Level</option>
+        <option value="8">8th Level</option>
+        <option value="9">9th Level</option>
+      </select>
+    </div>
+    
+    <!-- Source (optional) -->
+    <label class="field-label" style="display:block;margin-bottom:6px">Source (optional)</label>
+    <input id="bonus-spell-source" class="field-input" placeholder="e.g., Ancient Tome, Draconic Blessing, Campaign Training" style="margin-bottom:14px">
+    
+    <!-- Notes (optional) -->
+    <label class="field-label" style="display:block;margin-bottom:6px">Notes (optional)</label>
+    <textarea id="bonus-spell-notes" class="field-input" rows="2" placeholder="Any special rules or limitations..." style="margin-bottom:20px"></textarea>
+    
+    <div style="display:flex;gap:10px">
+      <button class="gold-btn" onclick="confirmAddBonusSpell()" style="background:#2a0a3a; border-color:#8a3a9a; color:#c080e0">✨ Add Bonus Spell</button>
+      <button onclick="closeBonusSpellModal()"
+              style="background:#1a1520;border:1px solid #4a3728;border-radius:6px;color:#8a7560;
+                     padding:8px 16px;cursor:pointer;font-size:13px;font-family:'Cinzel',serif">Cancel</button>
+    </div>
+  </div>
+</div>
 <!-- ── ADD LANGUAGE MODAL ── -->
 <div id="lang-modal" onclick="if(event.target===this)closeAddLanguageModal()"
      style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.78);z-index:9999;
