@@ -740,10 +740,14 @@
       <button class="gold-btn" onclick="openCustomItemModal()" style="white-space:nowrap;background:#1a1a2e;border-color:#5a3a9a;color:#b06aee" title="Create a homebrew magic item">+ Custom</button>
     </div>
     <!-- Attunement tracker -->
-    <div style="margin-top:10px;display:flex;align-items:center;gap:12px">
+    <div style="margin-top:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
       <span class="field-label" style="flex-shrink:0">Attunement Slots:</span>
-      <div id="attunement-tracker" style="display:flex;gap:8px"></div>
-      <span id="attunement-count" style="font-size:11px;color:#8a7560"></span>
+      <div id="attunement-tracker" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+      <div style="display:flex;gap:6px;align-items:center;margin-left:auto">
+        <button id="attune-minus-btn" onclick="removeAttunementSlot()" title="Remove custom attunement slot" style="background:#3a1a1a;border:1px solid #5a2a2a;color:#8a5a5a;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:12px">−</button>
+        <button id="attune-plus-btn" onclick="addAttunementSlot()" title="Add custom attunement slot" style="background:#1a3a1a;border:1px solid #2a5a2a;color:#6a9a6a;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:12px">+</button>
+      </div>
+      <span id="attunement-count" style="font-size:11px;color:#8a7560;white-space:nowrap"></span>
     </div>
   </div>
 
@@ -3162,6 +3166,7 @@ const state = {
   spellSlots: {},  // {1:{max,used}, ...}
   warlockSlotsUsed: 0,
   sorceryPointsUsed: 0,
+  customAttunementSlots: 0,  // 0-2 additional slots, starts at 3
   inventory: [],
   resistances: [],       // [{source,type}] auto-populated
   customResistances: [], // user-added free text
@@ -5628,6 +5633,7 @@ function gatherSaveData() {
     spellSlots: JSON.parse(JSON.stringify(state.spellSlots)),
     warlockSlotsUsed: state.warlockSlotsUsed,
     sorceryPointsUsed: state.sorceryPointsUsed,
+    customAttunementSlots: state.customAttunementSlots,
     knownSpells: [...state.knownSpells],
     feats: [...state.selectedFeats],
     customResistances: [...state.customResistances],
@@ -5735,6 +5741,7 @@ function applySaveData(d) {
   if(d.spellSlots) Object.keys(d.spellSlots).forEach(k=>{ state.spellSlots[k]=d.spellSlots[k]; });
   state.warlockSlotsUsed=d.warlockSlotsUsed||0;
   state.sorceryPointsUsed=d.sorceryPointsUsed||0;
+  state.customAttunementSlots=d.customAttunementSlots||0;
   state.knownSpells=new Set(d.knownSpells||[]);
   state.selectedFeats=d.feats||[]; renderFeats();
   state.customResistances=d.customResistances||[]; updateResistances();
@@ -6075,13 +6082,35 @@ function addMagicItem() {
   const sel = document.getElementById('magic-item-sel');
   if (!sel || !sel.value) return;
   const name = sel.value;
-  if (state.magicItems.find(m => m.name === name)) {
-    showToast('⚠ ' + name + ' already in collection', '#6b4a1a');
-    return;
-  }
   const item = MAGIC_ITEMS.find(m => m.name === name);
   if (!item) return;
-  state.magicItems.push({...item, attuned: false, notes: ''});
+  
+  // Check if it's a consumable (Potion or Scroll)
+  const isConsumable = item.group === 'Potions' || item.group === 'Scrolls';
+  
+  // Check if already added
+  const existingItem = state.magicItems.find(m => m.name === name);
+  if (existingItem) {
+    if (isConsumable) {
+      // For consumables, increment quantity
+      existingItem.quantity = (existingItem.quantity || 1) + 1;
+      sel.value = '';
+      renderMagicItems();
+      autoSave();
+      showToast('✓ ' + name + ' (now x' + existingItem.quantity + ')', '#1a6b1a');
+    } else {
+      // For non-consumables, prevent duplicates
+      showToast('⚠ ' + name + ' already in collection', '#6b4a1a');
+    }
+    return;
+  }
+  
+  // Add new item
+  const newItem = {...item, attuned: false, notes: ''};
+  if (isConsumable) {
+    newItem.quantity = 1;
+  }
+  state.magicItems.push(newItem);
   sel.value = '';
   renderMagicItems();
   autoSave();
@@ -6094,13 +6123,37 @@ function removeMagicItem(name) {
   autoSave();
 }
 
+function incrementConsumable(name) {
+  const item = state.magicItems.find(m => m.name === name);
+  if (!item) return;
+  item.quantity = (item.quantity || 1) + 1;
+  renderMagicItems();
+  autoSave();
+  showToast('✓ ' + name + ' (now x' + item.quantity + ')', '#1a6b1a');
+}
+
+function decrementConsumable(name) {
+  const item = state.magicItems.find(m => m.name === name);
+  if (!item) return;
+  const current = item.quantity || 1;
+  if (current <= 1) {
+    showToast('⚠ Remove the item to delete it completely', '#6b4a1a');
+    return;
+  }
+  item.quantity = current - 1;
+  renderMagicItems();
+  autoSave();
+  showToast('✓ ' + name + ' used (x' + item.quantity + ' remaining)', '#6b1a1a');
+}
+
 function toggleAttunement(name) {
   const item = state.magicItems.find(m => m.name === name);
   if (!item) return;
-  // Check attunement limit (max 3)
+  // Check attunement limit (dynamic based on custom slots)
+  const maxSlots = 3 + state.customAttunementSlots;
   const attuned = state.magicItems.filter(m => m.attuned).length;
-  if (!item.attuned && attuned >= 3) {
-    showToast('⚠ Already attuned to 3 items (max)', '#6b1a1a');
+  if (!item.attuned && attuned >= maxSlots) {
+    showToast('⚠ Already attuned to ' + maxSlots + ' items (max)', '#6b1a1a');
     return;
   }
   item.attuned = !item.attuned;
@@ -6151,6 +6204,9 @@ function renderMagicItems() {
     items.forEach(m => {
       const rc = RARITY_COLORS[m.rarity] || RARITY_COLORS.common;
       const safeName = m.name.replace(/'/g,"\'");
+      const isConsumable = m.group === 'Potions' || m.group === 'Scrolls';
+      const quantity = m.quantity || 1;
+      
       const attuneBtn = m.attunement
         ? `<button onclick="toggleAttunement('${safeName}');event.stopPropagation()"
              title="${m.attuned?'Remove attunement':'Attune to this item'}"
@@ -6159,6 +6215,19 @@ function renderMagicItems() {
                     padding:2px 6px;cursor:pointer;flex-shrink:0">
              ${m.attuned?'◆ Attuned':'◇ Attune'}</button>`
         : '';
+      
+      const consumableActions = isConsumable 
+        ? `<div style="display:flex;gap:6px;align-items:center;font-size:10px;color:#8a7560">
+             <button onclick="decrementConsumable('${safeName}');event.stopPropagation()" 
+                     title="Use/consume one" style="background:#2a1a0a;border:1px solid #4a2a1a;
+                     border-radius:3px;color:#8a6a3a;padding:2px 5px;cursor:pointer">− Use</button>
+             <span style="min-width:20px;text-align:center">x${quantity}</span>
+             <button onclick="incrementConsumable('${safeName}');event.stopPropagation()"
+                     title="Add one" style="background:#1a2a1a;border:1px solid #2a4a2a;
+                     border-radius:3px;color:#6a9a6a;padding:2px 5px;cursor:pointer">+ Add</button>
+           </div>`
+        : '';
+      
       html += `
         <div onclick="showMagicModal('${safeName}')"
              style="background:${rc.bg};border:1px solid ${rc.border};border-radius:8px;
@@ -6171,7 +6240,7 @@ function renderMagicItems() {
                       letter-spacing:.06em;font-weight:600">${rc.label}</div>
           <!-- Name -->
           <div class="cinzel" style="font-size:13px;color:${rc.text};padding-right:60px;margin-bottom:4px;line-height:1.3">
-            ${m.custom ? '<span style="font-size:9px;color:#b06aee;border:1px solid #6a3a9a;border-radius:8px;padding:1px 5px;margin-right:5px;vertical-align:middle">✦ Custom</span>' : ''}${m.name}
+            ${m.custom ? '<span style="font-size:9px;color:#b06aee;border:1px solid #6a3a9a;border-radius:8px;padding:1px 5px;margin-right:5px;vertical-align:middle">✦ Custom</span>' : ''}${m.name}${isConsumable ? ' <span style="font-size:11px;color:#8a7560">(x' + quantity + ')</span>' : ''}
           </div>
           <!-- Type -->
           <div style="font-size:11px;color:#8a7560;margin-bottom:6px">${m.type}${m.attunement?'<span style="color:#c9a84c"> · Requires Attunement</span>':''}</div>
@@ -6183,8 +6252,9 @@ function renderMagicItems() {
           <!-- Desc preview -->
           <div style="font-size:11px;color:#6a5a4a;line-height:1.4;margin-top:4px">${m.desc.slice(0,90)}${m.desc.length>90?'…':''}</div>
           <!-- Actions row -->
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:6px">
             ${attuneBtn}
+            ${consumableActions}
             ${m.custom ? `<button onclick="openCustomItemModal('${safeName}');event.stopPropagation()"
                     style="background:#1a0a2a;border:1px solid #6a3a9a;border-radius:4px;color:#b06aee;
                            font-size:10px;padding:2px 7px;cursor:pointer"
@@ -6214,11 +6284,23 @@ function groupIcon(grp) {
 function updateAttunementTracker() {
   const tracker = document.getElementById('attunement-tracker');
   const count = document.getElementById('attunement-count');
+  const plusBtn = document.getElementById('attune-plus-btn');
+  const minusBtn = document.getElementById('attune-minus-btn');
+  
   if (!tracker) return;
   const attuned = state.magicItems.filter(m => m.attuned);
-  const slots = 3;
+  const maxSlots = 3 + state.customAttunementSlots;  // 3 base + custom (max 5 total)
+  
+  // Update button states
+  if (plusBtn) plusBtn.disabled = state.customAttunementSlots >= 2;
+  if (minusBtn) minusBtn.disabled = state.customAttunementSlots <= 0;
+  if (plusBtn) plusBtn.style.opacity = state.customAttunementSlots >= 2 ? '0.4' : '1';
+  if (minusBtn) minusBtn.style.opacity = state.customAttunementSlots <= 0 ? '0.4' : '1';
+  if (plusBtn) plusBtn.style.cursor = state.customAttunementSlots >= 2 ? 'not-allowed' : 'pointer';
+  if (minusBtn) minusBtn.style.cursor = state.customAttunementSlots <= 0 ? 'not-allowed' : 'pointer';
+  
   let html = '';
-  for (let i = 0; i < slots; i++) {
+  for (let i = 0; i < maxSlots; i++) {
     if (i < attuned.length) {
       const rc = RARITY_COLORS[attuned[i].rarity] || RARITY_COLORS.common;
       html += `<div title="${attuned[i].name}" style="background:${rc.badge};border:1px solid ${rc.border};
@@ -6231,7 +6313,35 @@ function updateAttunementTracker() {
     }
   }
   tracker.innerHTML = html;
-  if (count) count.textContent = `${attuned.length}/3 slots used`;
+  if (count) count.textContent = `${attuned.length}/${maxSlots} slots used`;
+}
+
+function addAttunementSlot() {
+  if (state.customAttunementSlots >= 2) {
+    showToast('⚠ Maximum 5 total attunement slots (3 base + 2 custom)', '#6b4a1a');
+    return;
+  }
+  state.customAttunementSlots++;
+  updateAttunementTracker();
+  autoSave();
+  showToast('✓ Attunement slot added (' + (3 + state.customAttunementSlots) + '/5)', '#1a6b1a');
+}
+
+function removeAttunementSlot() {
+  if (state.customAttunementSlots <= 0) {
+    showToast('⚠ Cannot remove below base 3 slots', '#6b4a1a');
+    return;
+  }
+  const maxSlots = 3 + state.customAttunementSlots;
+  const attuned = state.magicItems.filter(m => m.attuned);
+  if (attuned.length >= maxSlots) {
+    showToast('⚠ Remove an attuned item first (' + attuned.length + ' items attuned)', '#6b1a1a');
+    return;
+  }
+  state.customAttunementSlots--;
+  updateAttunementTracker();
+  autoSave();
+  showToast('✓ Attunement slot removed (' + (3 + state.customAttunementSlots) + '/5)', '#1a6b1a');
 }
 
 function showMagicModal(name) {
